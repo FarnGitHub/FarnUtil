@@ -1,5 +1,6 @@
 package farn.farn_util.impl;
 
+import farn.farn_util.api.ParticleDisableQuadDraw;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.render.Tessellator;
 
@@ -13,9 +14,9 @@ public class CustomPaticleImpl {
         Tessellator tessellator = Tessellator.INSTANCE;
 
         for(Particle particle : CUSTOM_PARTICLES){
-            tessellator.startQuads();
+            if(!(particle instanceof ParticleDisableQuadDraw)) tessellator.startQuads();
             particle.render(tessellator, partialTicks, var3, var7, var4, var5, var6);
-            tessellator.draw();
+            if(!(particle instanceof ParticleDisableQuadDraw)) tessellator.draw();
         }
     }
 
