@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class ArsenicItemRendererMixin {
 
     //turn off item rotation when rendering campfire's items
-    @WrapOperation(method="renderVanilla", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 1))
+    @WrapOperation(method="renderVanilla", at = {@At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 1), @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 0)})
     void turnOffRotation(float angle, float x, float y, float z, Operation<Void> original) {
         StaticItemRendererImpl.changeRotationArsenic(angle,x,y,z, original);
     }

@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class Dropped3DItemMixin {
 
     //Same as ArsenicItemRendererMixin but 3D, apply when there is 3D Dropped item mod
-    @WrapOperation(method="render3DVanilla", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 1))
+    @WrapOperation(method="render3DVanilla", at = {@At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 1), @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 0)})
     private static void disableRotation(float angle, float x, float y, float z, Operation<Void> original) {
         StaticItemRendererImpl.changeRotation3D(angle, x, y, z, original);
     }
