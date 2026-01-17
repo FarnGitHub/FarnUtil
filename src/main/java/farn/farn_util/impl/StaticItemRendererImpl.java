@@ -19,6 +19,10 @@ public class StaticItemRendererImpl {
         original.call(x, FarnUtil.isStaticItemRender() ? y - offset.get() : y, z);
     }
 
+    public static void genericStopTranslate(float x, float y, float z, Operation<Void> original) {
+        if(!FarnUtil.isStaticItemRender()) original.call(x,y,z);;
+    }
+
     public static void resizeItem(float x, float y, float z, Operation<Void> original) {
         if(FarnUtil.isStaticItemRender())
             original.call(x + 0.0128205F, y + 0.0128205F, z + 0.0128205F);

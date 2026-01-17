@@ -23,6 +23,11 @@ public class Dropped3DItemMixin {
         StaticItemRendererImpl.undoBopping(x,y,z,original,offset);
     }
 
+    @WrapOperation(method="render3DVanilla", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glTranslatef(FFF)V", ordinal = 1))
+    private static void stopRandomOffset(float x, float y, float z, Operation<Void> original) {
+        StaticItemRendererImpl.genericStopTranslate(x,y,z,original);
+    }
+
     @WrapOperation(method="render3DVanilla", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glScalef(FFF)V", ordinal = 1))
     private static void renderInFrame1(float x, float y, float z, Operation<Void> original) {
         StaticItemRendererImpl.resizeItem(x,y,z,original);
