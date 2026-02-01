@@ -7,7 +7,8 @@
   "client": [
     "item_renderer.ArsenicItemRendererMixin",
     "item_renderer.Dropped3DItemMixin",
-    "ParticleManagerMixin"
+    "ParticleManagerMixin",
+    "item_renderer.Arsenic3DJsonCompatMixin"
   ],
   "injectors": {
     "defaultRequire": 1

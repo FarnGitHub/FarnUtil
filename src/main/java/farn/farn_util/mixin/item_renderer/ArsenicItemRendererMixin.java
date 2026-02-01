@@ -5,11 +5,14 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import farn.farn_util.impl.StaticItemRendererImpl;
+import net.minecraft.entity.ItemEntity;
+import net.modificationstation.stationapi.api.client.render.model.BakedModel;
+import net.modificationstation.stationapi.api.client.render.model.json.ModelTransformation;
 import net.modificationstation.stationapi.impl.client.arsenic.renderer.render.ArsenicItemRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(ArsenicItemRenderer.class)
+@Mixin(value = ArsenicItemRenderer.class)
 public class ArsenicItemRendererMixin {
 
     //turn off item rotation when rendering campfire's items
@@ -32,4 +35,19 @@ public class ArsenicItemRendererMixin {
     void renderInFrame1(float x, float y, float z, Operation<Void> original) {
         StaticItemRendererImpl.resizeItem(x,y,z,original);
     }
+
+    @WrapOperation(method="renderModel", at = {@At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 1), @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 0)})
+    void turnOffRotationJson(float angle, float x, float y, float z, Operation<Void> original) {
+        StaticItemRendererImpl.changeRotationArsenic(angle,x,y,z, original);
+    }
+
+    @WrapOperation(method="renderModel", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glTranslatef(FFF)V", ordinal = 0))
+    void turnOffTranslatedJson(float x, float y, float z, Operation<Void> original, @Local(argsOnly = true, index = 3) float yOg, @Local(argsOnly = true, index = 11) BakedModel model) {
+        StaticItemRendererImpl.undoBoppingJson(x, y, z, original,yOg, model);
+    }
+    @WrapOperation(method="renderModel", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glTranslatef(FFF)V", ordinal = 1))
+    void stopRandomOffsetJson(float x, float y, float z, Operation<Void> original) {
+        StaticItemRendererImpl.genericStopTranslate(x,y,z,original);
+    }
+
 }

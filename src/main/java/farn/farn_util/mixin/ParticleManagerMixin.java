@@ -14,16 +14,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ParticleManagerMixin {
 
     @Inject(method = "removeDeadParticles", at = @At("TAIL"))
-    void campfireRemoveDeadParticles(CallbackInfo ci){
+    void removeDeadParticle(CallbackInfo ci){
         CustomPaticleImpl.clearDeadParticles();
     }
     @Inject(method = "setWorld", at = @At("TAIL"))
-    void campfireSetWorld(World world, CallbackInfo ci){
+    void setWorld(World world, CallbackInfo ci){
         CustomPaticleImpl.clearParticles();
     }
 
     @Inject(method = "render", at = @At("TAIL"))
-    void campfireRender(Entity entity, float partialTicks, CallbackInfo ci, @Local(ordinal = 1)float var3, @Local(ordinal = 2)float var4, @Local(ordinal = 3)float var5, @Local(ordinal = 4)float var6, @Local(ordinal = 5)float var7){
+    void render(Entity entity, float partialTicks, CallbackInfo ci, @Local(ordinal = 1)float var3, @Local(ordinal = 2)float var4, @Local(ordinal = 3)float var5, @Local(ordinal = 4)float var6, @Local(ordinal = 5)float var7){
         CustomPaticleImpl.renderMultipleParticles(partialTicks, var3, var4, var5, var6, var7);
     }
 }

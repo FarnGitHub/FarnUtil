@@ -3,6 +3,8 @@ package farn.farn_util.impl;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import farn.farn_util.FarnUtil;
+import net.modificationstation.stationapi.api.client.render.model.BakedModel;
+import net.modificationstation.stationapi.api.client.render.model.json.ModelTransformation;
 
 public class StaticItemRendererImpl {
 
@@ -28,5 +30,9 @@ public class StaticItemRendererImpl {
             original.call(x + 0.0128205F, y + 0.0128205F, z + 0.0128205F);
         else
             original.call(x,y,z);
+    }
+
+    public static void undoBoppingJson(float x, float y, float z, Operation<Void> original, float ogY, BakedModel model) {
+        original.call(x, FarnUtil.isStaticItemRender() ? ogY * model.getTransformation().getTransformation(ModelTransformation.Mode.GROUND).scale.getY() : y, z);
     }
 }

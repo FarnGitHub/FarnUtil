@@ -1,6 +1,7 @@
 package farn.farn_util.impl;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.modificationstation.stationapi.api.StationAPI;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -21,7 +22,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if(targetClassName.equals("Dropped3DItemMixin")) {
+        if(mixinClassName.equals("farn.farn_util.mixin.item_renderer.Dropped3DItemMixin") || mixinClassName.equals("farn.farn_util.mixin.item_renderer.Arsenic3DJsonCompatMixin")) {
             return FabricLoader.getInstance().isModLoaded("item_3d");
         }
         return true;
