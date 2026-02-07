@@ -1,4 +1,4 @@
-package farn.farn_util.mixin;
+package farn.farn_util.mixin.particle;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import farn.farn_util.impl.CustomPaticleImpl;

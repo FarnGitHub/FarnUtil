@@ -1,0 +1,8 @@
+classTweaker v1 named
+
+accessible field net/minecraft/client/Minecraft INSTANCE Lnet/minecraft/client/Minecraft;
+accessible method net/minecraft/client/MultiplayerInteractionManager updateSelectedSlot ()V
+accessible method net/minecraft/entity/player/PlayerInventory indexOf (I)I
+transitive-inject-interface net/minecraft/entity/player/PlayerEntity farn/farn_util/impl/item_usage/PlayerItemUsage
+transitive-inject-interface net/minecraft/item/Item farn/farn_util/impl/item_usage/ExtendedItemUsage
+

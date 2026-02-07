@@ -9,10 +9,20 @@
   ],
   "license": "MIT",
   "icon": "assets/farn_util/icon.png",
-  "environment": "client",
+  "environment": "*",
+  "accessWidener": "item_usage.classTweaker",
   "mixins": [
-    "farn.util.mixins.json"
+    "farn.util.mixins.json",
+    "item_usage.mixins.json"
   ],
+  "entrypoints": {
+    "stationapi:event_bus": [
+      "farn.farn_util.impl.item_usage.ItemUsageAPI"
+    ],
+    "unitweaks:event_bus": [
+      "farn.farn_util.impl.item_usage.UniTweakCompat"
+    ]
+  },
   "depends": {
     "minecraft": "1.0.0-beta.7.3",
     "stationapi": "*"

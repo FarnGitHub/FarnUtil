@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "farn.farn_util.mixin.item_usage",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "PlayerMixin",
+    "ItemMixin"
+  ],
+  "server": [
+    "PlayerMPMixin"
+  ],
+  "client": [
+    "OtherPlayerMPMixin",
+    "MinecraftMixin",
+    "MixinFovMulti",
+    "PlayerClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

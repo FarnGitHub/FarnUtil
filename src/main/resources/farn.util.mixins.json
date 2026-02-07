@@ -3,11 +3,11 @@
   "minVersion": "0.8",
   "package": "farn.farn_util.mixin",
   "compatibilityLevel": "JAVA_17",
-  "plugin": "farn.farn_util.impl.MixinPlugin",
+  "plugin": "farn.farn_util.mixin.MixinPlugin",
   "client": [
     "item_renderer.ArsenicItemRendererMixin",
     "item_renderer.Dropped3DItemMixin",
-    "ParticleManagerMixin",
+    "particle.ParticleManagerMixin",
     "item_renderer.Arsenic3DJsonCompatMixin"
   ],
   "injectors": {

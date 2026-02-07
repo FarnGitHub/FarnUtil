@@ -20,10 +20,7 @@ java {
 
 loom {
     if (project.hasProperty("accesswidener_name") && project.accesswidener_name.length() > 0) {
-        accessWidenerPath = file("src/main/resources/${project.accesswidener_name}.accesswidener")
-    }
-    mixin {
-        useLegacyMixinAp = false
+        accessWidenerPath = file("src/main/resources/${project.accesswidener_name}.classTweaker")
     }
 }
 
@@ -111,6 +108,17 @@ dependencies {
     modImplementation("net.danygames2014:spawneggs:${project.spawneggs_version}") {
         transitive false
     }
+
+    if (project.hasProperty("unitweaks_version")) {
+        modImplementation("maven.modrinth:unitweaks:${project.unitweaks_version}-b1.7.3") {
+            transitive = false
+        }
+    }
+
+    modRuntimeOnly("maven.modrinth:fast-stapi-intro:2.0.0-b1.7.3") {
+        transitive = false
+    }
+
 }
 
 processResources {

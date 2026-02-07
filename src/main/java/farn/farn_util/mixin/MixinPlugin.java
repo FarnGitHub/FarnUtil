@@ -1,7 +1,6 @@
-package farn.farn_util.impl;
+package farn.farn_util.mixin;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.modificationstation.stationapi.api.StationAPI;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
