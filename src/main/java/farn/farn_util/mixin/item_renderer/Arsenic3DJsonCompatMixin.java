@@ -1,6 +1,6 @@
 package farn.farn_util.mixin.item_renderer;
 
-import farn.farn_util.FarnUtil;
+import farn.farn_util.api.static_item.StaticItemRendererAPI;
 import farn.threeD_item.Item3D;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
@@ -17,6 +17,6 @@ public class Arsenic3DJsonCompatMixin {
 
     @Inject(method="renderModel", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 1))
     void turnOffRotationJson(ItemEntity item, float x, float y, float z, float delta, ItemStack var10, float var11, float var12, byte renderedAmount, SpriteAtlasTexture atlas, BakedModel model, CallbackInfo ci) {
-         Item3D.rotateJsonItem = !FarnUtil.isStaticItemRender();
+         Item3D.rotateJsonItem = !StaticItemRendererAPI.isStaticItemRender();
     }
 }

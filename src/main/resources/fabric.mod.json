@@ -17,7 +17,7 @@
   ],
   "entrypoints": {
     "stationapi:event_bus": [
-      "farn.farn_util.impl.item_usage.ItemUsageAPI"
+      "farn.farn_util.impl.item_usage.ItemUsageImplClient"
     ],
     "unitweaks:event_bus": [
       "farn.farn_util.impl.item_usage.UniTweakCompat"

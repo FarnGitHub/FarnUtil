@@ -1,9 +1,10 @@
 package farn.farn_util.mixin.item_usage;
 
-import farn.farn_util.impl.item_usage.ItemUsageAPI;
-import farn.farn_util.impl.item_usage.PlayerItemUsage;
+import farn.farn_util.FarnUtil;
+import farn.farn_util.impl.item_usage.interfaces_impl.PlayerItemUsage;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -33,49 +34,49 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
         super(world);
     }
 
-    public ItemStack UseApi_getUsingItem() {
+    public ItemStack farnutil_getUsingItem() {
         return useApi_itemStack;
     }
 
-    public void UseApi_setUsingItem(ItemStack stack) {
+    public void farnutil_setUsingItem(ItemStack stack) {
         useApi_itemStack = stack;
     }
 
-    public int UseApi_getUsingDuration() {
+    public int farnutil_getUsingDuration() {
         return useApi_holdingDuration;
     }
 
-    public void UseApi_setUsingDuration(int value) {
+    public void farnutil_setUsingDuration(int value) {
         useApi_holdingDuration = value;
     }
 
-    public void UseApi_stopUsingItem() {
-        if(UseApi_hasUsingItem() && UseApi_getUsingItem().getItem() != null) {
-            UseApi_getUsingItem().getItem().UseApi_stopUsingItem(UseApi_getUsingItem(), this.world, (PlayerEntity) (Object)this, UseApi_getUsingDuration());
+    public void farnutil_stopUsingItem() {
+        if(farnutil_isUsingItem() && farnutil_getUsingItem().getItem() != null) {
+            farnutil_getUsingItem().getItem().farnutil_stopUsingItem(farnutil_getUsingItem(), this.world, (PlayerEntity) (Object)this, farnutil_getUsingDuration());
         }
-        UseApi_clearUsingItem();
+        farnutil_clearUsingItem();
     }
 
-    public void UseApi_setUsingItemWithDuration(ItemStack stack) {
-        if(stack != UseApi_getUsingItem()) {
-            UseApi_setUsingItem(stack);
+    public void farnutil_setUsingItemMaxDuration(ItemStack stack) {
+        if(stack != farnutil_getUsingItem()) {
+            farnutil_setUsingItem(stack);
             if(stack != null && stack.getItem() != null) {
-                UseApi_setUsingDuration(stack.getItem().UseApi_getMaxDuration(stack));
+                farnutil_setUsingDuration(stack.getItem().farnutil_getMaxDuration(stack));
             }
-            UseApi_setHasAction(true);
+            farnutil_setHasAction(true);
         }
     }
 
-    public void UseApi_clearUsingItem() {
-        UseApi_setUsingItem(null);
-        UseApi_setUsingDuration(0);
-        UseApi_setHasAction(false);
+    public void farnutil_clearUsingItem() {
+        farnutil_setUsingItem(null);
+        farnutil_setUsingDuration(0);
+        farnutil_setHasAction(false);
     }
 
-    public void UseApi_finishedUsingItem() {
-        if(UseApi_hasUsingItem() && UseApi_getUsingItem().getItem() != null) {
-            int i1 = UseApi_getUsingItem().count;
-            ItemStack itemStack2 = UseApi_getUsingItem().getItem().UseApi_onFinishedUsing(useApi_itemStack, this.world, (PlayerEntity) (Object)this);
+    public void farnutil_finishUsingItem() {
+        if(farnutil_isUsingItem() && farnutil_getUsingItem().getItem() != null) {
+            int i1 = farnutil_getUsingItem().count;
+            ItemStack itemStack2 = farnutil_getUsingItem().getItem().farnutil_finishUsingItem(useApi_itemStack, this.world, (PlayerEntity) (Object)this);
             if(itemStack2 != this.useApi_itemStack || itemStack2 != null && itemStack2.count != i1) {
                 this.inventory.main[this.inventory.selectedSlot] = itemStack2;
                 if(itemStack2.count == 0) {
@@ -83,14 +84,14 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
                 }
             }
 
-            this.UseApi_clearUsingItem();
+            this.farnutil_clearUsingItem();
         }
     }
 
     @Override
-    public String UseApi_getUsingItemAction(ItemStack stack) {
+    public String farnutil_getActionType(ItemStack stack) {
         if(stack != null && stack.getItem() != null) {
-            String str = stack.getItem().UseApi_getActionType(stack);
+            String str = stack.getItem().farnutil_getActionType(stack);
             if(str != null) return str;
         }
         return "";
@@ -98,42 +99,42 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
 
     @Inject(method="tick", at = @At("TAIL"))
     public void tickingWhatEver(CallbackInfo ci) {
-        if(UseApi_hasUsingItem()) {
+        if(farnutil_isUsingItem()) {
             ItemStack itemStack1 = this.inventory.getSelectedItem();
             if(!itemStack1.equals(this.useApi_itemStack)) {
-                this.UseApi_clearUsingItem();
+                this.farnutil_clearUsingItem();
             } else {
                 if(--this.useApi_holdingDuration == 0 && !this.world.isRemote) {
-                    this.UseApi_finishedUsingItem();
+                    this.farnutil_finishUsingItem();
                 }
             }
         }
     }
 
-    public float UseApi_getWalkSpeedMultiplier() {
-        return UseApi_getUsingItem() != null ? UseApi_getUsingItem().getItem().UseApi_getWalkSpeedMultiplier((PlayerEntity) (Object) this, UseApi_getUsingItem(), UseApi_getUsingDuration()) : 1.0F;
+    public float farnutil_getWalkSpeedMultiplier() {
+        return farnutil_getUsingItem() != null ? farnutil_getUsingItem().getItem().farnutil_getSpeedMultiplier((PlayerEntity) (Object) this, farnutil_getUsingItem(), farnutil_getUsingDuration()) : 1.0F;
     }
 
     @Environment(EnvType.CLIENT)
-    public float UseApi_getFovMultiplier() {
+    public float farnutil_getFovMultiplier() {
         return 1.0F;
     }
 
-    public boolean UseApi_hasAction() {
+    public boolean farnutil_hasAction() {
         return useApi_hasAction;
     }
 
-    public void UseApi_setHasAction(boolean value) {
-        if(!world.isRemote) {
-            useApi_hasAction = value;
-        } else {
-            MessagePacket packet = new MessagePacket(ItemUsageAPI.NAMESPACE.id("item_usage_api_actionUpdated"));
+    public void farnutil_setHasAction(boolean value) {
+        useApi_hasAction = value;
+        if(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+            MessagePacket packet = new MessagePacket(FarnUtil.NAMESPACE.id("item_usage_api_actionUpdated"));
             packet.booleans = new boolean[]{value};
+            packet.ints = new int[]{this.id};
             PacketHelper.sendToAllTracking(this, packet);
         }
     }
 
-    public void UseApi_setHasActionOnly(boolean value) {
+    public void farnutil_setHasActionOnly(boolean value) {
         useApi_hasAction = value;
     }
 

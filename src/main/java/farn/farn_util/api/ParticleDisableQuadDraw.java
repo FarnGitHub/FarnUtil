@@ -1,4 +1,6 @@
 package farn.farn_util.api;
 
-public interface ParticleDisableQuadDraw {
+//Move to particle folder
+@Deprecated
+public interface ParticleDisableQuadDraw extends farn.farn_util.api.particle.ParticleDisableQuadDraw {
 }

@@ -13,6 +13,6 @@ public class UniTweakCompat {
     }
 
     private float getFovMulti() {
-        return Minecraft.INSTANCE.player != null ? FovHandler.getFov(Minecraft.INSTANCE.player) : 1.0F;
+        return Minecraft.INSTANCE.player != null ? FovHandler.getFovWithCheck(Minecraft.INSTANCE.player) : 1.0F;
     }
 }

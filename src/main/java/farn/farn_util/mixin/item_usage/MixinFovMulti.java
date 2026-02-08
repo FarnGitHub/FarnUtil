@@ -19,6 +19,6 @@ public class MixinFovMulti {
 
     @Inject(method="getFov", at = @At("RETURN"))
     public void overrideFov(float tick, CallbackInfoReturnable<Float> cir, @Local(index = 3) LocalFloatRef fov) {
-        fov.set(fov.get() * FovHandler.getFov(client.player));
+        fov.set(fov.get() * FovHandler.getFovWithCheck(client.player));
     }
 }

@@ -1,7 +1,7 @@
 package farn.farn_util.mixin.particle;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import farn.farn_util.impl.CustomPaticleImpl;
+import farn.farn_util.impl.particle.CustomPaticleImpl;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;

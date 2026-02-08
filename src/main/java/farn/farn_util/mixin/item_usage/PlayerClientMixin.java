@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ClientPlayerEntity.class)
+@Mixin(value = ClientPlayerEntity.class, priority = 900)
 public abstract class PlayerClientMixin extends PlayerEntity {
     @Shadow
     public Input input;
@@ -20,14 +20,14 @@ public abstract class PlayerClientMixin extends PlayerEntity {
     }
 
     @Override
-    public float UseApi_getFovMultiplier() {
-        return UseApi_getUsingItem() != null ? UseApi_getUsingItem().getItem().UseApi_getFovMultiplier(this, UseApi_getUsingItem(), UseApi_getUsingDuration()) : 1.0F;
+    public float farnutil_getFovMultiplier() {
+        return farnutil_getUsingItem() != null ? farnutil_getUsingItem().getItem().farnutil_getFovMultiplier(this, farnutil_getUsingItem(), farnutil_getUsingDuration()) : 1.0F;
     }
 
     @Inject(method="tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;update(Lnet/minecraft/entity/player/PlayerEntity;)V", shift = At.Shift.AFTER))
     public void getCustomWalkSpeedMultiplier(CallbackInfo ci) {
-        if(UseApi_hasUsingItem() && !hasVehicle()) {
-            float walkSpeedMultiplier = UseApi_getWalkSpeedMultiplier();
+        if(farnutil_isUsingItem() && !hasVehicle()) {
+            float walkSpeedMultiplier = farnutil_getWalkSpeedMultiplier();
             this.input.movementSideways *= walkSpeedMultiplier;
             this.input.movementForward *= walkSpeedMultiplier;
         }
