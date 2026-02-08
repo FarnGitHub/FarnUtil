@@ -100,8 +100,8 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
     @Inject(method="tick", at = @At("TAIL"))
     public void tickingWhatEver(CallbackInfo ci) {
         if(farnutil_isUsingItem()) {
-            ItemStack itemStack1 = this.inventory.getSelectedItem();
-            if(!itemStack1.equals(this.useApi_itemStack)) {
+            ItemStack selectedItem = this.inventory.getSelectedItem();
+            if(selectedItem == null || !selectedItem.equals(this.useApi_itemStack)) {
                 this.farnutil_clearUsingItem();
             } else {
                 if(--this.useApi_holdingDuration == 0 && !this.world.isRemote) {

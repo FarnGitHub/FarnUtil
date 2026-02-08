@@ -54,7 +54,11 @@ public interface PlayerItemUsage {
     }
 
     default boolean farnutil_isActionType(ItemStack stack, Identifier identifier) {
-        return farnutil_getActionType(stack).id.equals(identifier);
+        try {
+            return farnutil_getActionType(stack).id.equals(identifier);
+        } catch (NullPointerException e) {
+            return false;
+        }
     }
 
     @Environment(EnvType.CLIENT)
