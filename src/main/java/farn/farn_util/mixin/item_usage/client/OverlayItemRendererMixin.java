@@ -1,4 +1,4 @@
-package farn.farn_util.mixin.item_usage;
+package farn.farn_util.mixin.item_usage.client;
 
 import farn.farn_util.api.item_usage.ActionType;
 import net.minecraft.entity.player.ClientPlayerEntity;
@@ -14,8 +14,9 @@ public class OverlayItemRendererMixin {
 
     @Inject(method={"renderVanilla(FFLnet/minecraft/entity/player/ClientPlayerEntity;Lnet/minecraft/item/ItemStack;)V", "renderModel(FFLnet/minecraft/entity/player/ClientPlayerEntity;Lnet/minecraft/item/ItemStack;)V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isHandheldRod()Z", shift = At.Shift.BEFORE))
     public void renderHeldItem(float tick, float avgHeight, ClientPlayerEntity player, ItemStack stack, CallbackInfo ci) {
-        ActionType iden = player.farnutil_getActionType(stack);
-        if(iden != null) iden.applyHeldItemRotation(tick, avgHeight, player, stack);
-
+        if(player.farnutil_isUsingItem()) {
+            ActionType iden = player.farnutil_getActionType(stack);
+            if(iden != null) iden.applyFirstPersonItemRotation(tick, avgHeight, player, stack);
+        }
     }
 }

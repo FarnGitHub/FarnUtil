@@ -1,4 +1,4 @@
-package farn.farn_util.mixin.item_usage;
+package farn.farn_util.mixin.item_usage.common;
 
 import farn.farn_util.impl.item_usage.interfaces_impl.ExtendedItemUsage;
 import net.minecraft.item.Item;

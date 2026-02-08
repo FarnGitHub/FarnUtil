@@ -1,4 +1,4 @@
-package farn.farn_util.mixin.item_usage;
+package farn.farn_util.mixin.item_usage.client;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;

@@ -4,18 +4,19 @@
   "package": "farn.farn_util.mixin.item_usage",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "PlayerMixin",
-    "ItemMixin"
+    "common.PlayerMixin",
+    "common.ItemMixin"
   ],
   "server": [
-    "PlayerMPMixin"
+    "server.PlayerMPMixin"
   ],
   "client": [
-    "OtherPlayerMPMixin",
-    "MinecraftMixin",
-    "MixinFovMulti",
-    "PlayerClientMixin",
-    "OverlayItemRendererMixin"
+    "client.player.OtherPlayerMPMixin",
+    "client.MinecraftMixin",
+    "client.MixinFovMulti",
+    "client.player.PlayerClientMixin",
+    "client.OverlayItemRendererMixin",
+    "client.player.PlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

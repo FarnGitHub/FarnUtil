@@ -1,4 +1,4 @@
-package farn.farn_util.mixin.item_usage;
+package farn.farn_util.mixin.item_usage.client.player;
 
 import net.minecraft.client.network.OtherPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
