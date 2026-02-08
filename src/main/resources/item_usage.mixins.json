@@ -14,7 +14,8 @@
     "OtherPlayerMPMixin",
     "MinecraftMixin",
     "MixinFovMulti",
-    "PlayerClientMixin"
+    "PlayerClientMixin",
+    "OverlayItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,6 +1,7 @@
 package farn.farn_util.mixin.item_usage;
 
 import farn.farn_util.FarnUtil;
+import farn.farn_util.api.item_usage.ActionType;
 import farn.farn_util.impl.item_usage.interfaces_impl.PlayerItemUsage;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -90,7 +91,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
     }
 
     @Override
-    public Identifier farnutil_getActionType(ItemStack stack) {
+    public ActionType farnutil_getActionType(ItemStack stack) {
         if(stack != null && stack.getItem() != null) {
             return stack.getItem().farnutil_getActionType(stack);
         }

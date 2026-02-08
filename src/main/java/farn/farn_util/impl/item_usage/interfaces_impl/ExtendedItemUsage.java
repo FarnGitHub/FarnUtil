@@ -1,5 +1,6 @@
 package farn.farn_util.impl.item_usage.interfaces_impl;
 
+import farn.farn_util.api.item_usage.ActionType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -28,7 +29,7 @@ public interface ExtendedItemUsage {
      * returns the action that specified what the item does when using it
      * useful for player animation
      */
-    default Identifier farnutil_getActionType() {
+    default ActionType farnutil_getActionType() {
         return null;
     }
 
@@ -37,7 +38,7 @@ public interface ExtendedItemUsage {
      * useful for player animation
      * @param stack the ItemStack instance of that item.
      */
-    default Identifier farnutil_getActionType(ItemStack stack) {
+    default ActionType farnutil_getActionType(ItemStack stack) {
         return farnutil_getActionType();
     }
 
