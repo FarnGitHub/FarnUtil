@@ -8,7 +8,8 @@
     "item_renderer.ArsenicItemRendererMixin",
     "item_renderer.Dropped3DItemMixin",
     "particle.ParticleManagerMixin",
-    "item_renderer.Arsenic3DJsonCompatMixin"
+    "item_renderer.Arsenic3DJsonCompatMixin",
+    "entity_model_flag.EntityModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1

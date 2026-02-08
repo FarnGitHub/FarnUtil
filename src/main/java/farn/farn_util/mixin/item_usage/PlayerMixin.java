@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.network.packet.MessagePacket;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
+import net.modificationstation.stationapi.api.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -89,12 +90,11 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
     }
 
     @Override
-    public String farnutil_getActionType(ItemStack stack) {
+    public Identifier farnutil_getActionType(ItemStack stack) {
         if(stack != null && stack.getItem() != null) {
-            String str = stack.getItem().farnutil_getActionType(stack);
-            if(str != null) return str;
+            return stack.getItem().farnutil_getActionType(stack);
         }
-        return "";
+        return null;
     }
 
     @Inject(method="tick", at = @At("TAIL"))

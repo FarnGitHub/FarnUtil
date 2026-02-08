@@ -3,6 +3,7 @@ package farn.farn_util.impl.item_usage.interfaces_impl;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Util;
 
 import javax.annotation.Nullable;
@@ -45,14 +46,14 @@ public interface PlayerItemUsage {
         Util.assertImpl();
     }
 
-    default @Nullable String farnutil_getActionType(ItemStack stack) {
+    default Identifier farnutil_getActionType(ItemStack stack) {
         return Util.assertImpl();
     }
 
     @SuppressWarnings("all")
-    default boolean farnutil_isActionType(ItemStack stack, String name) {
+    default boolean farnutil_isActionType(ItemStack stack, Identifier identifier) {
         try {
-            return farnutil_getActionType(stack).equals(name);
+            return farnutil_getActionType(stack).equals(identifier);
         } catch (NullPointerException e) {
             return false;
         }
