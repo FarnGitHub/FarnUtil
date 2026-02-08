@@ -1,10 +1,13 @@
 package farn.farn_util.api.particle;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.Particle;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 //Use to add particle, purely clientside
 public class ParticleAPI {
     public static final List<Particle> CUSTOM_PARTICLES = new ArrayList<>();

@@ -16,7 +16,7 @@ public class OverlayItemRendererMixin {
     public void renderHeldItem(float tick, float avgHeight, ClientPlayerEntity player, ItemStack stack, CallbackInfo ci) {
         if(player.farnutil_isUsingItem()) {
             ActionType iden = player.farnutil_getActionType(stack);
-            if(iden != null) iden.applyFirstPersonItemRotation(tick, avgHeight, player, stack);
+            if(iden != null) iden.getAnimation().applyFirstPersonItemRotation(tick, avgHeight, player, stack);
         }
     }
 }

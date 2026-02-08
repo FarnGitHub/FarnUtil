@@ -3,6 +3,8 @@ package farn.farn_util;
 import farn.farn_util.api.particle.ParticleAPI;
 import farn.farn_util.api.static_item.StaticItemRendererAPI;
 import farn.farn_util.impl.item_usage.ItemUsageImplClient;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.client.particle.Particle;
 import net.modificationstation.stationapi.api.event.registry.MessageListenerRegistryEvent;
@@ -34,16 +36,19 @@ public class FarnUtil {
         });
     }
 
+    @Environment(EnvType.CLIENT)
     @Deprecated
     public static void setStaticItemRender(boolean bool) {
         StaticItemRendererAPI.setStaticItemRender(bool);
     }
 
+    @Environment(EnvType.CLIENT)
     @Deprecated
     public static boolean isStaticItemRender() {
         return StaticItemRendererAPI.isStaticItemRender();
     }
 
+    @Environment(EnvType.CLIENT)
     @Deprecated
     public static void addParticle(Particle particle) {
         ParticleAPI.addParticle(particle);

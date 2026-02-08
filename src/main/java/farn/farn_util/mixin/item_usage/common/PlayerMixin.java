@@ -24,6 +24,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsage {
     @Shadow
     public PlayerInventory inventory;
+
+    @Shadow
+    public abstract ItemStack getHand();
+
     @Unique
     ItemStack useApi_itemStack;
     @Unique
@@ -56,6 +60,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
             farnutil_getUsingItem().getItem().farnutil_stopUsingItem(farnutil_getUsingItem(), this.world, (PlayerEntity) (Object)this, farnutil_getUsingDuration());
         }
         farnutil_clearUsingItem();
+        FarnUtil.LOGGER.info("Farnutil has been stopped");
     }
 
     public void farnutil_setUsingItemMaxDuration(ItemStack stack) {
@@ -100,8 +105,8 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
     @Inject(method="tick", at = @At("TAIL"))
     public void tickingWhatEver(CallbackInfo ci) {
         if(farnutil_isUsingItem()) {
-            ItemStack selectedItem = this.inventory.getSelectedItem();
-            if(selectedItem == null || !selectedItem.equals(this.useApi_itemStack)) {
+            ItemStack itemStack = this.getHand();
+            if(itemStack != null && !itemStack.equals(this.useApi_itemStack)) {
                 this.farnutil_clearUsingItem();
             } else {
                 if(--this.useApi_holdingDuration == 0 && !this.world.isRemote) {

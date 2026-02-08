@@ -112,6 +112,8 @@ dependencies {
         transitive = false
     }
 
+    modImplementation(files("mod_impl/beta18_bow-1.0.jar"))
+
 }
 
 processResources {

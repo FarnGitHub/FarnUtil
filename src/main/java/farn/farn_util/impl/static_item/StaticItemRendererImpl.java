@@ -3,9 +3,12 @@ package farn.farn_util.impl.static_item;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import farn.farn_util.api.static_item.StaticItemRendererAPI;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.modificationstation.stationapi.api.client.render.model.BakedModel;
 import net.modificationstation.stationapi.api.client.render.model.json.ModelTransformation;
 
+@Environment(EnvType.CLIENT)
 public class StaticItemRendererImpl {
 
     public static void changeRotationArsenic(float angle, float x, float y, float z, Operation<Void> original) {

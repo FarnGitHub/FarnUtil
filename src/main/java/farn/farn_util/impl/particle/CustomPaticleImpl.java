@@ -1,11 +1,14 @@
 package farn.farn_util.impl.particle;
 
 import farn.farn_util.api.particle.ParticleDisableQuadDraw;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.render.Tessellator;
 
 import farn.farn_util.api.particle.ParticleAPI;
 
+@Environment(EnvType.CLIENT)
 public class CustomPaticleImpl {
 
     public static void renderMultipleParticles(float partialTicks, float var3, float var4, float var5, float var6, float var7) {

@@ -16,7 +16,7 @@ public class PlayerRendererMixin {
         if(player.farnutil_isUsingItem()) {
             ActionType action = player.farnutil_getActionType(player.getHand());
             if(action != null) {
-                action.applyThirdPersonItemRotation(tick, player, player.getHand());
+                action.getAnimation().applyThirdPersonItemRotation(tick, player, player.getHand());
             }
         }
     }
