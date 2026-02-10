@@ -67,13 +67,4 @@ public class ServerNetworkHandlerMixin {
              @Share(value="isNotItemWithDuration", namespace = "farn_util") LocalBooleanRef ref) {
         return ref.get();
     }
-
-    @WrapOperation(method="onPlayerInteractBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/ScreenHandler;getSlot(Lnet/minecraft/inventory/Inventory;I)Lnet/minecraft/screen/slot/Slot;"))
-    public Slot test6(ScreenHandler instance, Inventory index, int i, Operation<Slot> original,
-                      @Share(value="isNotItemWithDuration", namespace = "farn_util") LocalBooleanRef ref) {
-        if(ref.get()) {
-            return null;
-        }
-        return original.call(instance, index, i);
-    }
 }
