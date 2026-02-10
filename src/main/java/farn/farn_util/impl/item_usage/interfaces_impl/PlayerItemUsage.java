@@ -21,7 +21,7 @@ public interface PlayerItemUsage {
         Util.assertImpl();
     }
 
-    default void farnutil_setUsingItemMaxDuration(ItemStack stack) {
+    default void farnutil_setUsingItemMaxDuration(ItemStack stack, int duration) {
         Util.assertImpl();
     }
 

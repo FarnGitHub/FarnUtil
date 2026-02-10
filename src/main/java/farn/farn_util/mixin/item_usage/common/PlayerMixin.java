@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.StationAPI;
 import net.modificationstation.stationapi.api.network.packet.MessagePacket;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import org.spongepowered.asm.mixin.Mixin;
@@ -60,15 +61,12 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
             farnutil_getUsingItem().getItem().farnutil_stopUsingItem(farnutil_getUsingItem(), this.world, (PlayerEntity) (Object)this, farnutil_getUsingDuration());
         }
         farnutil_clearUsingItem();
-        FarnUtil.LOGGER.info("Farnutil has been stopped");
     }
 
-    public void farnutil_setUsingItemMaxDuration(ItemStack stack) {
-        if(stack != farnutil_getUsingItem()) {
-            farnutil_setUsingItem(stack);
-            if(stack != null && stack.getItem() != null) {
-                farnutil_setUsingDuration(stack.getItem().farnutil_getMaxDuration(stack));
-            }
+    public void farnutil_setUsingItemMaxDuration(ItemStack stack, int duration) {
+        if(stack != useApi_itemStack) {
+            useApi_itemStack = stack;
+            useApi_holdingDuration = duration;
             farnutil_setHasAction(true);
         }
     }
@@ -80,7 +78,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
     }
 
     public void farnutil_finishUsingItem() {
-        if(farnutil_isUsingItem() && farnutil_getUsingItem().getItem() != null) {
+        if(farnutil_isUsingItem()) {
             int i1 = farnutil_getUsingItem().count;
             ItemStack itemStack2 = farnutil_getUsingItem().getItem().farnutil_finishUsingItem(useApi_itemStack, this.world, (PlayerEntity) (Object)this);
             if(itemStack2 != this.useApi_itemStack || itemStack2 != null && itemStack2.count != i1) {
@@ -102,17 +100,18 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
         return null;
     }
 
-    @Inject(method="tick", at = @At("TAIL"))
+    @Inject(method="tick", at = @At("HEAD"))
     public void tickingWhatEver(CallbackInfo ci) {
-        if(farnutil_isUsingItem()) {
+        if(useApi_itemStack != null) {
             ItemStack itemStack = this.getHand();
-            if(itemStack != null && !itemStack.equals(this.useApi_itemStack)) {
-                this.farnutil_clearUsingItem();
+            if(itemStack == useApi_itemStack) {
+               if(--this.useApi_holdingDuration == 0 && !this.world.isRemote) {
+                   this.farnutil_finishUsingItem();
+               }
             } else {
-                if(--this.useApi_holdingDuration == 0 && !this.world.isRemote) {
-                    this.farnutil_finishUsingItem();
-                }
+                this.farnutil_clearUsingItem();
             }
+
         }
     }
 
@@ -130,17 +129,23 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
     }
 
     public void farnutil_setHasAction(boolean value) {
-        useApi_hasAction = value;
-        if(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
-            MessagePacket packet = new MessagePacket(FarnUtil.NAMESPACE.id("item_usage_api_actionUpdated"));
-            packet.booleans = new boolean[]{value};
-            packet.ints = new int[]{this.id};
-            PacketHelper.sendToAllTracking(this, packet);
+        if(!world.isRemote) {
+            useApi_hasAction = value;
+            if(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+                MessagePacket packet = new MessagePacket(FarnUtil.NAMESPACE.id("item_usage_api_actionUpdated"));
+                packet.booleans = new boolean[]{value};
+                packet.ints = new int[]{this.id};
+                PacketHelper.sendToAllTracking(this, packet);
+            }
         }
     }
 
     public void farnutil_setHasActionOnly(boolean value) {
         useApi_hasAction = value;
+    }
+
+    public boolean farnutil_equals(ItemStack primary, ItemStack second) {
+        return primary.equals(second);
     }
 
 }

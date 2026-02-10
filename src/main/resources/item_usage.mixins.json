@@ -8,7 +8,8 @@
     "common.ItemMixin"
   ],
   "server": [
-    "server.PlayerMPMixin"
+    "server.PlayerMPMixin",
+    "server.ServerNetworkHandlerMixin"
   ],
   "client": [
     "client.player.OtherPlayerMPMixin",
@@ -18,6 +19,7 @@
     "client.OverlayItemRendererMixin",
     "client.player.PlayerRendererMixin"
   ],
+  "mixinextras": {"minVersion": "0.5.0"},
   "injectors": {
     "defaultRequire": 1
   }
