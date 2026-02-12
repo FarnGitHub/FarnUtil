@@ -2,9 +2,9 @@ classTweaker v1 named
 
 transitive-accessible field net/minecraft/client/Minecraft INSTANCE Lnet/minecraft/client/Minecraft;
 transitive-accessible method net/minecraft/client/MultiplayerInteractionManager updateSelectedSlot ()V
-transitive-accessible field net/minecraft/client/render/entity/PlayerEntityRenderer bipedModel Lnet/minecraft/client/render/entity/mode;
-transitive-accessible field net/minecraft/client/render/entity/PlayerEntityRenderer armor1 Lnet/minecraft/client/render/entity/mode;
-transitive-accessible field net/minecraft/client/render/entity/PlayerEntityRenderer armor2 Lnet/minecraft/client/render/entity/mode;
+transitive-accessible field net/minecraft/client/render/entity/PlayerEntityRenderer bipedModel Lnet/minecraft/client/render/entity/model/BipedEntityModel;
+transitive-accessible field net/minecraft/client/render/entity/PlayerEntityRenderer armor1 Lnet/minecraft/client/render/entity/model/BipedEntityModel;
+transitive-accessible field net/minecraft/client/render/entity/PlayerEntityRenderer armor2 Lnet/minecraft/client/render/entity/model/BipedEntityModel;
 transitive-inject-interface net/minecraft/entity/player/PlayerEntity farn/farn_util/impl/item_usage/interfaces_impl/PlayerItemUsage
 transitive-inject-interface net/minecraft/item/Item farn/farn_util/impl/item_usage/interfaces_impl/ExtendedItemUsage
 transitive-inject-interface net/minecraft/client/render/entity/model/EntityModel farn/farn_util/impl/entity_model_flag/EntityModelFlagImpl
