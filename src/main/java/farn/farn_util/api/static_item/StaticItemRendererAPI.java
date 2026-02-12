@@ -12,7 +12,7 @@ public class StaticItemRendererAPI {
 
     @SuppressWarnings("unused")
     public static void setStaticItemRender(boolean bool) {
-        staticItemRender = true;
+        staticItemRender = bool;
     }
 
     @SuppressWarnings("unused")
