@@ -6,6 +6,7 @@ import net.minecraft.client.render.entity.model.EntityModel;
 import net.modificationstation.stationapi.api.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.Inject;
 
 @Mixin(EntityModel.class)
 public class EntityModelMixin implements EntityModelFlagImpl {

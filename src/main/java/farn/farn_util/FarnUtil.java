@@ -35,22 +35,4 @@ public class FarnUtil {
                     ,() -> {});
         });
     }
-
-    @Environment(EnvType.CLIENT)
-    @Deprecated
-    public static void setStaticItemRender(boolean bool) {
-        StaticItemRendererAPI.setStaticItemRender(bool);
-    }
-
-    @Environment(EnvType.CLIENT)
-    @Deprecated
-    public static boolean isStaticItemRender() {
-        return StaticItemRendererAPI.isStaticItemRender();
-    }
-
-    @Environment(EnvType.CLIENT)
-    @Deprecated
-    public static void addParticle(Particle particle) {
-        ParticleAPI.addParticle(particle);
-    }
 }

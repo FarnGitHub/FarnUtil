@@ -1,7 +1,7 @@
 package farn.farn_util.mixin.item_usage.common;
 
 import farn.farn_util.FarnUtil;
-import farn.farn_util.api.item_usage.ActionType;
+import farn.farn_util.api.item_usage.ActionHandler;
 import farn.farn_util.impl.item_usage.interfaces_impl.PlayerItemUsage;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -11,7 +11,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.modificationstation.stationapi.api.StationAPI;
 import net.modificationstation.stationapi.api.network.packet.MessagePacket;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import org.spongepowered.asm.mixin.Mixin;
@@ -93,7 +92,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
     }
 
     @Override
-    public ActionType farnutil_getActionType(ItemStack stack) {
+    public ActionHandler farnutil_getActionType(ItemStack stack) {
         if(stack != null && stack.getItem() != null) {
             return stack.getItem().farnutil_getActionType(stack);
         }

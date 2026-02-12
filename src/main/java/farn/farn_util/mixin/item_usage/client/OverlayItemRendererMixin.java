@@ -1,6 +1,6 @@
 package farn.farn_util.mixin.item_usage.client;
 
-import farn.farn_util.api.item_usage.ActionType;
+import farn.farn_util.api.item_usage.ActionHandler;
 import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.impl.client.arsenic.renderer.render.ArsenicOverlayRenderer;
@@ -15,8 +15,8 @@ public class OverlayItemRendererMixin {
     @Inject(method={"renderVanilla(FFLnet/minecraft/entity/player/ClientPlayerEntity;Lnet/minecraft/item/ItemStack;)V", "renderModel(FFLnet/minecraft/entity/player/ClientPlayerEntity;Lnet/minecraft/item/ItemStack;)V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isHandheldRod()Z", shift = At.Shift.BEFORE))
     public void renderHeldItem(float tick, float avgHeight, ClientPlayerEntity player, ItemStack stack, CallbackInfo ci) {
         if(player.farnutil_isUsingItem()) {
-            ActionType iden = player.farnutil_getActionType(stack);
-            if(iden != null) iden.getAnimation().applyFirstPersonItemRotation(tick, avgHeight, player, stack);
+            ActionHandler iden = player.farnutil_getActionType(stack);
+            if(iden != null && iden.animation != null) iden.animation.applyFirstPersonItemRotation(tick, avgHeight, player, stack);
         }
     }
 }

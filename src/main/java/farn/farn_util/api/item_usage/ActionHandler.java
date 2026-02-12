@@ -4,21 +4,21 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-public abstract class ActionType {
+public abstract class ActionHandler {
 
     public final Identifier id;
 
     @Environment(EnvType.CLIENT)
-    protected ActionTypeAnimation animation;
+    public final ActionAnimator animation;
 
-    public ActionType(Identifier id) {
+    public ActionHandler(Identifier id) {
         this.id = id;
+        animation = createAnimation();
     }
 
-
     @Environment(EnvType.CLIENT)
-    public ActionTypeAnimation getAnimation() {
-        return animation;
+    protected ActionAnimator createAnimation() {
+        return new ActionAnimator();
     }
 
 }

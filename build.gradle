@@ -1,8 +1,12 @@
 plugins {
     id 'maven-publish'
-    id 'fabric-loom' version '1.14.9'
-    id 'babric-loom-extension' version '1.14.1'
+    id 'net.fabricmc.fabric-loom-remap' version '1.15.+'
+    id 'ploceus' version '1.15-SNAPSHOT'
 }
+ploceus {
+	setIntermediaryGeneration(2)
+}
+
 
 version = property("mod_version")
 group = property("maven_group")
@@ -75,46 +79,53 @@ repositories {
     }
 
     mavenCentral()
+    maven { url = "https://maven.ornithemc.net/releases" }
+    maven { url = "https://mvn.devos.one/releases" }
+    maven { url = "https://matthewperiut.github.io/repository" }
 }
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.glasslauncher:biny:${project.yarn_mappings}:v2"
+    mappings(ploceus.mappings("net.glasslauncher:biny-ornithe:b1.7.3+build.${project.biny_mappings}:mergedv2"))
+
+    clientExceptions ploceus.raven(project.client_raven_build, 'client')
+    serverExceptions ploceus.raven(project.server_raven_build, 'server')
+    clientSignatures ploceus.sparrow(project.client_sparrow_build, 'client')
+    serverSignatures ploceus.sparrow(project.server_sparrow_build, 'server')
+    "clientNests"("net.glasslauncher:biny-nests:b1.7.3-client+build.2")
+    "serverNests"("net.glasslauncher:biny-nests:b1.7.3-server+build.2")
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     implementation "org.slf4j:slf4j-api:1.8.0-beta4"
     implementation "org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2"
     implementation "me.carleslc:Simple-Yaml:1.8.4"
 
-    modImplementation(files("mod_impl/item3D-1.3.jar"))
+    modImplementation("maven.modrinth:3d-dropped-item-stationapi:1.3-gen2-b1.7.3")
 
-    modImplementation("net.modificationstation:StationAPI:${project.stapi_version}") {
-        exclude group: "babric", module: "fabric-loader"
-    }
+    modImplementation("net.modificationstation:StationAPI:${project.stapi_version}")
 
-    modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.alwaysmoreitems_version}") {
-        transitive false
-    }
-
-    modImplementation("net.glasslauncher.mods:glass-networking:${project.glass_networking_version}") {
-        transitive false
-    }
+    // TODO: will be add after ornithe version release
+    // modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.alwaysmoreitems_version}") {
+    // transitive false
+    // }
 
     modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
-        transitive false
+    	transitive = false
     }
 
-    modImplementation("maven.modrinth:unitweaks:${project.unitweaks_version}-b1.7.3") {
-        transitive = false
-    }
+    // TODO: will be add after ornithe version release
+    // modImplementation("maven.modrinth:unitweaks:${project.unitweaks_version}-b1.7.3") {
+    // transitive = false
+    // }
 
-    modRuntimeOnly("maven.modrinth:fast-stapi-intro:2.0.0-b1.7.3") {
-        transitive = false
-    }
 
-    modImplementation(files("mod_impl/beta18_bow-1.0.jar"))
-
+    modImplementation "com.periut:starac:${project.starac_version}"
 }
+// Exclude Legacy Fabric LWJGL 2 wrapper (starac provides LWJGL 3)
+configurations.configureEach {
+	exclude group: 'org.lwjgl.lwjgl'
+}
+
 
 processResources {
     inputs.property "version", project.version
@@ -125,7 +136,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 17
+    it.options.release = 21
 }
 
 // Disables the generation of the .module file

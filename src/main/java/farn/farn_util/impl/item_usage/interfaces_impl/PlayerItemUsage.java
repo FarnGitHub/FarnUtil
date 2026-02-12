@@ -1,6 +1,6 @@
 package farn.farn_util.impl.item_usage.interfaces_impl;
 
-import farn.farn_util.api.item_usage.ActionType;
+import farn.farn_util.api.item_usage.ActionHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
@@ -45,7 +45,7 @@ public interface PlayerItemUsage {
         Util.assertImpl();
     }
 
-    default ActionType farnutil_getActionType(ItemStack stack) {
+    default ActionHandler farnutil_getActionType(ItemStack stack) {
         return Util.assertImpl();
     }
 
