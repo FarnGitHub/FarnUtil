@@ -13,7 +13,7 @@ public class ParticleAPI {
     @SuppressWarnings("unused")
     public static void addParticle(Particle particle) {
         if (CUSTOM_PARTICLES.size() >= 4000) {
-            CUSTOM_PARTICLES.removeFirst();
+            CUSTOM_PARTICLES.remove(0);
         }
         CUSTOM_PARTICLES.add(particle);
     }
