@@ -12,11 +12,11 @@ public class BipedModelEntityMixin {
 
     @Inject(method="render", at = @At("TAIL"))
     public void renderModel(float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch, float scale, CallbackInfo ci) {
-        BipedModelHandler.loopRender((BipedEntityModel) (Object) this, limbAngle, limbDistance, animationProgress, headYaw, headPitch, scale);
+        BipedModelHandler.renderModel.iterate((BipedEntityModel) (Object) this, limbAngle, limbDistance, animationProgress, headYaw, headPitch, scale);
     }
 
     @Inject(method="setAngles", at = @At("TAIL"))
     public void setAngles(float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch, float scale, CallbackInfo ci) {
-        BipedModelHandler.loopAngles((BipedEntityModel) (Object) this, limbAngle, limbDistance, animationProgress, headYaw, headPitch, scale);
+        BipedModelHandler.setAngles.iterate((BipedEntityModel) (Object) this, limbAngle, limbDistance, animationProgress, headYaw, headPitch, scale);
     }
 }

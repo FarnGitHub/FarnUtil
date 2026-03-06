@@ -10,7 +10,7 @@
   "license": "MIT",
   "icon": "assets/farn_util/icon.png",
   "environment": "*",
-  "accessWidener": "item_usage.classTweaker",
+  "accessWidener": "farn.util.classTweaker",
   "mixins": [
     "farn.util.mixins.json",
     "item_usage.mixins.json"

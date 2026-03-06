@@ -1,37 +1,28 @@
 package farn.farn_util.api.biped_model_extended;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 
 public class BipedModelHandler {
-    private static final ObjectArrayList<BipedModelConsumer> setAngles = new ObjectArrayList<>();
-    private static final ObjectArrayList<BipedModelConsumer> renderModel = new ObjectArrayList<>();
+    public static final ModelEvents setAngles = new ModelEvents();
+    public static final ModelEvents renderModel = new ModelEvents();
 
-    @SuppressWarnings("unused")
+    @Deprecated
     public static void registerBipedModelSetAngle(BipedModelConsumer biped) {
-        setAngles.add(biped);
+        setAngles.register(biped);
     }
 
-    @SuppressWarnings("unused")
+    @Deprecated
     public static void registerBipedModelRender(BipedModelConsumer biped) {
-        renderModel.add(biped);
+        renderModel.register(biped);
     }
 
-    public static void loopRender(BipedEntityModel model, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch, float scale) {
-        if(renderModel.isEmpty()) return;
-        for(BipedModelConsumer consumer : renderModel)
-            consumer.accept(model,
-                    limbAngle, limbDistance, animationProgress, headYaw, headPitch, scale);
-    }
-
-    public static void loopAngles(BipedEntityModel model, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch, float scale) {
-        if(setAngles.isEmpty()) return;
-        for(BipedModelConsumer consumer : setAngles)
-            consumer.accept(model,
-                    limbAngle, limbDistance, animationProgress, headYaw, headPitch, scale);
-    }
-
-    public interface BipedModelConsumer {
+    @Deprecated
+    public interface BipedModelConsumer extends ModelEvents.Event {
         void accept(BipedEntityModel model, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch, float scale);
+
+        @Deprecated
+        default void call(BipedEntityModel model, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch, float scale) {
+            this.accept(model, limbAngle, limbDistance, animationProgress, headYaw, headPitch, scale);
+        }
     }
 }
