@@ -11,7 +11,7 @@ import farn.farn_util.api.particle.ParticleAPI;
 @Environment(EnvType.CLIENT)
 public class CustomPaticleImpl {
 
-    public static void renderMultipleParticles(float partialTicks, float var3, float var4, float var5, float var6, float var7) {
+    public static void render(float partialTicks, float var3, float var4, float var5, float var6, float var7) {
         Tessellator tessellator = Tessellator.INSTANCE;
         for(Particle particle : ParticleAPI.CUSTOM_PARTICLES){
             if(!(particle instanceof ParticleDisableQuadDraw)) tessellator.startQuads();
@@ -20,11 +20,11 @@ public class CustomPaticleImpl {
         }
     }
 
-    public static void clearParticles() {
+    public static void clear() {
         ParticleAPI.CUSTOM_PARTICLES.clear();
     }
 
-    public static void clearDeadParticles() {
+    public static void tick() {
         for(int i = 0; i < ParticleAPI.CUSTOM_PARTICLES.size(); ++i) {
             Particle particle = ParticleAPI.CUSTOM_PARTICLES.get(i);
             particle.tick();

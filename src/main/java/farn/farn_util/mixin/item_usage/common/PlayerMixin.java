@@ -143,8 +143,4 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
         useApi_hasAction = value;
     }
 
-    public boolean farnutil_equals(ItemStack primary, ItemStack second) {
-        return primary.equals(second);
-    }
-
 }
