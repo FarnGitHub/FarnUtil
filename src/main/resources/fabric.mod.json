@@ -21,9 +21,6 @@
     ],
     "stationapi:event_bus_client": [
       "farn.farn_util.impl.item_usage.ItemUsageImplClient"
-    ],
-    "unitweaks:event_bus": [
-      "farn.farn_util.impl.item_usage.UniTweakCompat"
     ]
   },
   "depends": {
