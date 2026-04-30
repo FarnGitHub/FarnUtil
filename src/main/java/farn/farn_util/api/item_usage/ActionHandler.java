@@ -9,6 +9,7 @@ public abstract class ActionHandler {
 
     public final Identifier id;
 
+    @Deprecated
     @Environment(EnvType.CLIENT)
     public ActionAnimator animation;
 
@@ -18,6 +19,7 @@ public abstract class ActionHandler {
             animation = createAnimation();
     }
 
+    @Deprecated
     @Environment(EnvType.CLIENT)
     protected ActionAnimator createAnimation() {
         return new ActionAnimator();

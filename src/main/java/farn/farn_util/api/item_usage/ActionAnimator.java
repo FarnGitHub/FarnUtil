@@ -7,6 +7,7 @@ import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
+@Deprecated
 @SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
 public class ActionAnimator {

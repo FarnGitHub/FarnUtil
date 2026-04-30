@@ -1,6 +1,7 @@
 package farn.farn_util.impl.item_usage.interfaces_impl;
 
 import farn.farn_util.api.item_usage.ActionHandler;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -68,5 +69,13 @@ public interface ExtendedItemUsage {
      */
     default float farnutil_getSpeedMultiplier(PlayerEntity entity, ItemStack stack, int duration) {
         return 1.0F;
+    }
+
+    default ObjectArrayList<String> farnutil_Tags() {
+        return ObjectArrayList.of();
+    }
+
+    default boolean farnutil_containTag(String tag) {
+        return farnutil_Tags().contains(tag);
     }
 }

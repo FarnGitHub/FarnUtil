@@ -15,10 +15,7 @@
     "client.player.OtherPlayerMPMixin",
     "client.MinecraftMixin",
     "client.MixinFovMulti",
-    "client.player.PlayerClientMixin",
-    "client.OverlayItemRendererMixin",
-    "client.player.PlayerRendererMixin",
-    "client.player.BipedModelEntityMixin"
+    "client.player.PlayerClientMixin"
   ],
   "mixinextras": {"minVersion": "0.5.0"},
   "injectors": {

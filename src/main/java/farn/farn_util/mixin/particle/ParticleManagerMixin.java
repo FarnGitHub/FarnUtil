@@ -22,8 +22,8 @@ public class ParticleManagerMixin {
         CustomPaticleImpl.clear();
     }
 
-    @Inject(method = "render", at = @At("TAIL"))
+    /*@Inject(method = "render", at = @At("TAIL"))
     void render(Entity entity, float partialTicks, CallbackInfo ci, @Local(ordinal = 1)float var3, @Local(ordinal = 2)float var4, @Local(ordinal = 3)float var5, @Local(ordinal = 4)float var6, @Local(ordinal = 5)float var7){
         CustomPaticleImpl.render(partialTicks, var3, var4, var5, var6, var7);
-    }
+    }*/
 }

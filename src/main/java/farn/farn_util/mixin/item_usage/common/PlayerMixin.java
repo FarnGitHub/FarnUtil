@@ -91,6 +91,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
         }
     }
 
+    @Deprecated
     @Override
     public ActionHandler farnutil_getActionType(ItemStack stack) {
         if(stack != null && stack.getItem() != null) {

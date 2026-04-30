@@ -3,6 +3,7 @@ package farn.farn_util.api.biped_model_extended;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 
+@Deprecated
 public class ModelEvents {
     private final ObjectArrayList<Event> events = new ObjectArrayList<>();
 

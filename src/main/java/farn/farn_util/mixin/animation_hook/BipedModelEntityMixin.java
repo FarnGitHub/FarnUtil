@@ -1,7 +1,8 @@
-package farn.farn_util.mixin.item_usage.client.player;
+package farn.farn_util.mixin.animation_hook;
 
-import farn.farn_util.api.biped_model_extended.BipedModelHandler;
+import farn.farn_util.api.animation_hook.bipedmodel.BipedModelEvent;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.modificationstation.stationapi.api.StationAPI;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -12,11 +13,15 @@ public class BipedModelEntityMixin {
 
     @Inject(method="render", at = @At("TAIL"))
     public void renderModel(float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch, float scale, CallbackInfo ci) {
-        BipedModelHandler.renderModel.iterate((BipedEntityModel) (Object) this, limbAngle, limbDistance, animationProgress, headYaw, headPitch, scale);
+        BipedModelEvent.Render event = new BipedModelEvent.Render();
+        event.setVar((BipedEntityModel) (Object) this, limbAngle, limbDistance, animationProgress, headYaw, headPitch, scale);
+        StationAPI.EVENT_BUS.post(event);
     }
 
     @Inject(method="setAngles", at = @At("TAIL"))
     public void setAngles(float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch, float scale, CallbackInfo ci) {
-        BipedModelHandler.setAngles.iterate((BipedEntityModel) (Object) this, limbAngle, limbDistance, animationProgress, headYaw, headPitch, scale);
+        BipedModelEvent.SetAngle event = new BipedModelEvent.SetAngle();
+        event.setVar((BipedEntityModel) (Object) this, limbAngle, limbDistance, animationProgress, headYaw, headPitch, scale);
+        StationAPI.EVENT_BUS.post(event);
     }
 }

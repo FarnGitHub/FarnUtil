@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MinecraftMixin {
 
     @Inject(method="tick", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;getEventButtonState()Z", ordinal = 1, shift = At.Shift.BEFORE))
-    public void checkBrabBrah(CallbackInfo ci) {
+    public void farnutil_onStopUsingItem(CallbackInfo ci) {
         MinecraftImpl.handleStopUsingItem();
     }
 
@@ -22,15 +22,15 @@ public class MinecraftMixin {
             @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;getEventButtonState()Z", ordinal = 2),
             @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;getEventButtonState()Z", ordinal = 3)}
     )
-    public boolean cancelDADSASDA(Operation<Boolean> original) {
-        return MinecraftImpl.canClickAndOriginal(original);
+    public boolean farnutil_isUsingItemAndClick(Operation<Boolean> original) {
+        return MinecraftImpl.makeSureItemIsNotOnUse(original);
     }
 
     @WrapOperation(method="tick", at = {
             @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;focused:Z", ordinal = 1),
             @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;focused:Z", ordinal = 2)
     })
-    public boolean dasdadasda(Minecraft instance, Operation<Boolean> original) {
-        return MinecraftImpl.noUsingItemAndOriginal(instance, original);
+    public boolean farnutil_isNotUsingItem(Minecraft instance, Operation<Boolean> original) {
+        return MinecraftImpl.isPlayerNotUsingItemAndOriginalCall(instance, original);
     }
 }

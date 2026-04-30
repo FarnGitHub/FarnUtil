@@ -12,15 +12,18 @@
   "environment": "*",
   "accessWidener": "farn.util.classTweaker",
   "mixins": [
-    "farn.util.mixins.json",
-    "item_usage.mixins.json"
+    "farn_util.mixins.json",
+    "farn_util_item_usage.mixins.json",
+    "farn_util_animation_hook.mixin.json"
   ],
   "entrypoints": {
     "stationapi:event_bus": [
       "farn.farn_util.FarnUtil"
     ],
     "stationapi:event_bus_client": [
-      "farn.farn_util.impl.item_usage.ItemUsageImplClient"
+      "farn.farn_util.impl.item_usage.ItemUsageImplClient",
+      "farn.farn_util.impl.legacy_animation_hook.LegacyAnimationHook",
+      "farn.farn_util.impl.particle.ParticleRender"
     ]
   },
   "depends": {

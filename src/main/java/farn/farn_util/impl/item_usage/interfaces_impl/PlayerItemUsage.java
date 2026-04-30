@@ -45,14 +45,17 @@ public interface PlayerItemUsage {
         Util.assertImpl();
     }
 
+    @Deprecated
     default ActionHandler farnutil_getActionType(ItemStack stack) {
         return Util.assertImpl();
     }
 
+    @Deprecated
     default boolean farnutil_hasActionType(ItemStack stack) {
         return farnutil_getActionType(stack) != null;
     }
 
+    @Deprecated
     default boolean farnutil_isActionType(ItemStack stack, Identifier identifier) {
         try {
             return farnutil_getActionType(stack).id.equals(identifier);
