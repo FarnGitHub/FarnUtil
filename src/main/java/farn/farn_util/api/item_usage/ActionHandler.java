@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.modificationstation.stationapi.api.util.Identifier;
 
+@Deprecated
 public abstract class ActionHandler {
 
     public final Identifier id;

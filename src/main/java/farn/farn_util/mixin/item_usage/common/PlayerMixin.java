@@ -13,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.network.packet.MessagePacket;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
+import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -142,6 +144,17 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
 
     public void farnutil_setHasActionOnly(boolean value) {
         useApi_hasAction = value;
+    }
+
+    public boolean farnutil_hasActionId(String str) {
+        return farnutil_getActionId() != null && farnutil_getActionId().equals(str);
+    }
+
+    public String farnutil_getActionId() {
+        return getHand().getItem().farnutil_getActionId(
+                (PlayerEntity)(Object) this,
+                getHand()
+        );
     }
 
 }

@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 public interface ExtendedItemUsage {
     /**
@@ -29,6 +30,7 @@ public interface ExtendedItemUsage {
      * returns the action that specified what the item does when using it
      * useful for player animation
      */
+    @Deprecated
     default ActionHandler farnutil_getActionType() {
         return null;
     }
@@ -38,6 +40,7 @@ public interface ExtendedItemUsage {
      * useful for player animation
      * @param stack the ItemStack instance of that item.
      */
+    @Deprecated
     default ActionHandler farnutil_getActionType(ItemStack stack) {
         return farnutil_getActionType();
     }
@@ -71,11 +74,15 @@ public interface ExtendedItemUsage {
         return 1.0F;
     }
 
-    default ObjectArrayList<String> farnutil_Tags() {
-        return ObjectArrayList.of();
+    default String farnutil_getActionId(PlayerEntity player, ItemStack stack) {
+        return farnutil_getActionId(stack);
     }
 
-    default boolean farnutil_containTag(String tag) {
-        return farnutil_Tags().contains(tag);
+    default String farnutil_getActionId(ItemStack stack) {
+        return farnutil_getActionId();
+    }
+
+    default String farnutil_getActionId() {
+        return null;
     }
 }
