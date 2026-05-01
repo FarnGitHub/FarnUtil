@@ -9,16 +9,18 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+/**
+ * Ungodly amount of expression mixin
+ * i hate doing this
+ */
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerNetworkHandlerMixin {
 
@@ -26,9 +28,9 @@ public class ServerNetworkHandlerMixin {
     @Definition(id= "skipPacketSlotUpdates", field = "Lnet/minecraft/entity/player/ServerPlayerEntity;skipPacketSlotUpdates:Z")
     @Expression(value="this.player.skipPacketSlotUpdates = true")//,
     @WrapWithCondition(method="onPlayerInteractBlock", at = @At("MIXINEXTRAS:EXPRESSION"))
-    public boolean test(ServerPlayerEntity instance, boolean value,
-                        @Local(type= ItemStack.class) ItemStack itemStack,
-                        @Share(value="isNotItemWithDuration", namespace = "farn_util") LocalBooleanRef ref) {
+    public boolean farnutil_cancelStackChange1(ServerPlayerEntity instance, boolean value,
+                                               @Local(type= ItemStack.class) ItemStack itemStack,
+                                               @Share(value="isNotItemWithDuration", namespace = "farn_util") LocalBooleanRef ref) {
         ref.set(itemStack == null || Item.ITEMS[itemStack.itemId].farnutil_getMaxDuration(itemStack) <= 0);
         return ref.get();
     }
@@ -37,7 +39,7 @@ public class ServerNetworkHandlerMixin {
     @Definition(id= "skipPacketSlotUpdates", field = "Lnet/minecraft/entity/player/ServerPlayerEntity;skipPacketSlotUpdates:Z")
     @Expression(value="this.player.skipPacketSlotUpdates = false")//,
     @WrapWithCondition(method="onPlayerInteractBlock", at = @At("MIXINEXTRAS:EXPRESSION"))
-    public boolean test2(ServerPlayerEntity instance, boolean value,
+    public boolean farnutil_cancelStackChange2(ServerPlayerEntity instance, boolean value,
                         @Share(value="isNotItemWithDuration", namespace = "farn_util") LocalBooleanRef ref) {
         return ref.get();
     }
@@ -49,7 +51,7 @@ public class ServerNetworkHandlerMixin {
     @Definition(id = "clone", method = "Lnet/minecraft/item/ItemStack;clone(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;")
     @Expression("this.player.inventory.main[this.player.inventory.selectedSlot] = clone(this.player.inventory.main[this.player.inventory.selectedSlot])")
     @WrapOperation(method="onPlayerInteractBlock", at = @At("MIXINEXTRAS:EXPRESSION"))
-    public void test3(ItemStack[] array, int index, ItemStack value, Operation<Void> original,
+    public void farnutil_cancelStackChange3(ItemStack[] array, int index, ItemStack value, Operation<Void> original,
              @Share(value="isNotItemWithDuration", namespace = "farn_util") LocalBooleanRef ref) {
         if(ref.get()) {
             original.call(array, index, value);
@@ -57,13 +59,13 @@ public class ServerNetworkHandlerMixin {
     }
 
     @WrapWithCondition(method="onPlayerInteractBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/ScreenHandler;sendContentUpdates()V"))
-    public boolean test4(ScreenHandler instance,
+    public boolean farnutil_cancelStackChange4(ScreenHandler instance,
              @Share(value="isNotItemWithDuration", namespace = "farn_util") LocalBooleanRef ref) {
         return ref.get();
     }
 
     @WrapWithCondition(method="onPlayerInteractBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 2))
-    public boolean test5(ServerPlayNetworkHandler instance, Packet packet,
+    public boolean farnutil_cancelStackChange5(ServerPlayNetworkHandler instance, Packet packet,
              @Share(value="isNotItemWithDuration", namespace = "farn_util") LocalBooleanRef ref) {
         return ref.get();
     }

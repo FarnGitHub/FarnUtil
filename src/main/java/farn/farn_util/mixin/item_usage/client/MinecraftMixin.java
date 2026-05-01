@@ -23,7 +23,7 @@ public class MinecraftMixin {
             @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;getEventButtonState()Z", ordinal = 3)}
     )
     public boolean farnutil_isUsingItemAndClick(Operation<Boolean> original) {
-        return MinecraftImpl.makeSureItemIsNotOnUse(original);
+        return MinecraftImpl.preventSingleUseWhenUsing(original);
     }
 
     @WrapOperation(method="tick", at = {
@@ -31,6 +31,6 @@ public class MinecraftMixin {
             @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;focused:Z", ordinal = 2)
     })
     public boolean farnutil_isNotUsingItem(Minecraft instance, Operation<Boolean> original) {
-        return MinecraftImpl.isPlayerNotUsingItemAndOriginalCall(instance, original);
+        return MinecraftImpl.preventSingleUseWhenUsing2(instance, original);
     }
 }

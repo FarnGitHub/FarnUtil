@@ -8,7 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
 
 @SuppressWarnings("unused")
-public class ParticleRender {
+public class ParticleWorldHook {
 
     @EventListener
     public void renderParticle(RenderWorldLastEvent event) {

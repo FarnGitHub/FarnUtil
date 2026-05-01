@@ -6,23 +6,22 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
 
 public class MinecraftImpl {
-    private static boolean noItemUsing = true;
+    public static final Minecraft mc = Minecraft.INSTANCE;
 
     public static void handleStopUsingItem() {
-        if(Minecraft.INSTANCE.player.farnutil_isUsingItem()) {
-            if (!Mouse.isButtonDown(1)) {
-                ItemUsageImplClient.stopUsingItemClient(Minecraft.INSTANCE.player);
-            }
-            noItemUsing = false;
-        } else
-            noItemUsing = true;
+        if(isPlayerUsingItem() && !Mouse.isButtonDown(1))
+            ItemUsageImplClient.stopUsing(Minecraft.INSTANCE.player);
     }
 
-    public static boolean makeSureItemIsNotOnUse(Operation<Boolean> original) {
-        return noItemUsing && original.call();
+    public static boolean preventSingleUseWhenUsing(Operation<Boolean> original) {
+        return !isPlayerUsingItem() && original.call();
     }
 
-    public static boolean isPlayerNotUsingItemAndOriginalCall(Minecraft instance, Operation<Boolean> original) {
-        return !instance.player.farnutil_isUsingItem() && original.call(instance);
+    public static boolean preventSingleUseWhenUsing2(Minecraft instance, Operation<Boolean> original) {
+        return !isPlayerUsingItem() && original.call(instance);
+    }
+
+    private static boolean isPlayerUsingItem() {
+        return mc.player.farnutil_isUsingItem();
     }
 }

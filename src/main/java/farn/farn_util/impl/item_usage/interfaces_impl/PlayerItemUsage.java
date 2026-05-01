@@ -1,6 +1,5 @@
 package farn.farn_util.impl.item_usage.interfaces_impl;
 
-import farn.farn_util.api.item_usage.ActionHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
@@ -45,25 +44,6 @@ public interface PlayerItemUsage {
         Util.assertImpl();
     }
 
-    @Deprecated
-    default ActionHandler farnutil_getActionType(ItemStack stack) {
-        return Util.assertImpl();
-    }
-
-    @Deprecated
-    default boolean farnutil_hasActionType(ItemStack stack) {
-        return farnutil_getActionType(stack) != null;
-    }
-
-    @Deprecated
-    default boolean farnutil_isActionType(ItemStack stack, Identifier identifier) {
-        try {
-            return farnutil_getActionType(stack).id.equals(identifier);
-        } catch (NullPointerException e) {
-            return false;
-        }
-    }
-
     @Environment(EnvType.CLIENT)
     default float farnutil_getFovMultiplier() {
         return Util.assertImpl();
@@ -76,6 +56,7 @@ public interface PlayerItemUsage {
     default boolean farnutil_hasAction() {
         return Util.assertImpl();
     }
+
     default void farnutil_setHasAction(boolean value) {
         Util.assertImpl();
     }

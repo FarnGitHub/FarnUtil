@@ -8,11 +8,11 @@
     "common.ItemMixin"
   ],
   "server": [
-    "server.PlayerMPMixin",
+    "server.ServerPlayerMixin",
     "server.ServerNetworkHandlerMixin"
   ],
   "client": [
-    "client.player.OtherPlayerMPMixin",
+    "client.player.OtherPlayerMixin",
     "client.MinecraftMixin",
     "client.MixinFovMulti",
     "client.player.PlayerClientMixin"

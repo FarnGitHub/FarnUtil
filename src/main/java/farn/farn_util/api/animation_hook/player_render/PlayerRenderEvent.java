@@ -5,6 +5,11 @@ import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
+/**
+ * Call when during super.render(playerEntity, d, var11, f, g, h); inside PlayerEntityRendererClass
+ * make sure to use PlayerRenderEvent.Before and PlayerRenderEvent.After
+ * PlayerRenderEvent on it own does nothing
+ */
 public abstract class PlayerRenderEvent extends Event {
     public PlayerEntityRenderer renderer;
     public PlayerEntity player;

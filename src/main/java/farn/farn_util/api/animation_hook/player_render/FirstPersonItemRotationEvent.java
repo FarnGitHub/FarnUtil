@@ -4,11 +4,13 @@ import net.mine_diver.unsafeevents.Event;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.modificationstation.stationapi.api.client.render.RendererAccess;
 import net.modificationstation.stationapi.api.client.render.model.VanillaBakedModel;
 import net.modificationstation.stationapi.impl.client.arsenic.renderer.ArsenicRenderer;
 import net.modificationstation.stationapi.impl.client.arsenic.renderer.render.ArsenicOverlayRenderer;
 
+/**
+ * Called when trying to do first person item rotation
+ */
 public class FirstPersonItemRotationEvent extends Event {
     public float tick;
     public float avgHeight;

@@ -22,8 +22,7 @@
     ],
     "stationapi:event_bus_client": [
       "farn.farn_util.impl.item_usage.ItemUsageImplClient",
-      "farn.farn_util.impl.legacy_animation_hook.LegacyAnimationHook",
-      "farn.farn_util.impl.particle.ParticleRender"
+      "farn.farn_util.impl.particle.ParticleWorldHook"
     ]
   },
   "depends": {

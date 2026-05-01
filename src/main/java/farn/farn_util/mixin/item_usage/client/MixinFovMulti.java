@@ -11,11 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(GameRenderer.class)
 public class MixinFovMulti {
 
-    @Shadow
-    private Minecraft client;
-
     @ModifyReturnValue(method="getFov", at = @At("RETURN"))
-    public float test(float original) {
-        return original *  FovHandler.getFovWithCheck(client.player);
+    public float farnutil_modifyFov(float original) {
+        return original * FovHandler.getFov();
     }
 }

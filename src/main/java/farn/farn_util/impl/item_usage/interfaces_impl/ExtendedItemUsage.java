@@ -1,11 +1,8 @@
 package farn.farn_util.impl.item_usage.interfaces_impl;
 
-import farn.farn_util.api.item_usage.ActionHandler;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.modificationstation.stationapi.api.util.Identifier;
 
 public interface ExtendedItemUsage {
     /**
@@ -24,25 +21,6 @@ public interface ExtendedItemUsage {
      */
     default int farnutil_getMaxDuration(ItemStack stack) {
         return 0;
-    }
-
-    /**
-     * returns the action that specified what the item does when using it
-     * useful for player animation
-     */
-    @Deprecated
-    default ActionHandler farnutil_getActionType() {
-        return null;
-    }
-
-    /**
-     * returns the action that specified what the item does when using it
-     * useful for player animation
-     * @param stack the ItemStack instance of that item.
-     */
-    @Deprecated
-    default ActionHandler farnutil_getActionType(ItemStack stack) {
-        return farnutil_getActionType();
     }
 
     /**
@@ -74,14 +52,26 @@ public interface ExtendedItemUsage {
         return 1.0F;
     }
 
+    /**
+     * Use to identified what action it does
+     * @param player The Player that using the item.
+     * @param stack the ItemStack instance of that item.
+     */
     default String farnutil_getActionId(PlayerEntity player, ItemStack stack) {
         return farnutil_getActionId(stack);
     }
 
+    /**
+     * Use to identified what action it does
+     * @param stack the ItemStack instance of that item.
+     */
     default String farnutil_getActionId(ItemStack stack) {
         return farnutil_getActionId();
     }
 
+    /**
+     * Use to identified what action it does
+     */
     default String farnutil_getActionId() {
         return null;
     }

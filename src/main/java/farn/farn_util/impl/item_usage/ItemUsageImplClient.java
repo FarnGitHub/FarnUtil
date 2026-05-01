@@ -13,7 +13,7 @@ import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 public class ItemUsageImplClient {
 
     @Environment(EnvType.CLIENT)
-    public static void stopUsingItemClient(PlayerEntity player) {
+    public static void stopUsing(PlayerEntity player) {
         if(Minecraft.INSTANCE.interactionManager instanceof MultiplayerInteractionManager mp) {
             mp.updateSelectedSlot();
             PacketHelper.send(new MessagePacket(FarnUtil.NAMESPACE.id("item_usage_api_stop")));
@@ -24,10 +24,8 @@ public class ItemUsageImplClient {
     @Environment(EnvType.CLIENT)
     public static void handleSetActionClient(PlayerEntity plr, MessagePacket msg) {
         if(plr == null) return;
-        if(plr.world instanceof ClientWorld clientWorld) {
-            if(clientWorld.getEntity(msg.ints[0]) instanceof PlayerEntity target) {
+        if(plr.world instanceof ClientWorld clientWorld)
+            if(clientWorld.getEntity(msg.ints[0]) instanceof PlayerEntity target)
                 target.farnutil_setHasActionOnly(msg.booleans[0]);
-            }
-        }
     }
 }

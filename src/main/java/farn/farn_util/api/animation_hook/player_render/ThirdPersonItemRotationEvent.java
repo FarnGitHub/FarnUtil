@@ -7,6 +7,9 @@ import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.client.render.model.VanillaBakedModel;
 import net.modificationstation.stationapi.impl.client.arsenic.renderer.ArsenicRenderer;
 
+/**
+ * Called when trying to do third person item rotation
+ */
 public class ThirdPersonItemRotationEvent extends Event {
     public float tick;
     public PlayerEntity plr;

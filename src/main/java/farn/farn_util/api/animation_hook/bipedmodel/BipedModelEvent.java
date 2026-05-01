@@ -3,6 +3,11 @@ package farn.farn_util.api.animation_hook.bipedmodel;
 import net.mine_diver.unsafeevents.Event;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 
+/**
+ * Call for entity model and animation staff
+ * make sure to use BipedModelEvent.SetAngle and BipedModelEvent.Render
+ * BipedModelEvent on it own does nothing
+ */
 public abstract class BipedModelEvent extends Event {
     public BipedEntityModel model;
     public float limbAngle;
