@@ -151,10 +151,14 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
     }
 
     public String farnutil_getActionId() {
-        return getHand().getItem().farnutil_getActionId(
-                (PlayerEntity)(Object) this,
-                getHand()
-        );
+        try {
+            return getHand().getItem().farnutil_getActionId(
+                    (PlayerEntity)(Object) this,
+                    getHand()
+            );
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
