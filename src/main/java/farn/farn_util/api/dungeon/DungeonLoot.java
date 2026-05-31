@@ -34,6 +34,7 @@ public class DungeonLoot extends DungeonWeight {
 	public boolean remove() {
 		if(index >= 0) {
 			DungeonAPI.loots.remove(index);
+			index = -1;
 			return true;
 		} else
 			return false;

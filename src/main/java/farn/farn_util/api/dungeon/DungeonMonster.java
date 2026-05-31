@@ -19,6 +19,7 @@ public class DungeonMonster extends DungeonWeight {
     public boolean remove() {
         if(index >= 0) {
             DungeonAPI.mobs.remove(index);
+            index = -1;
             return true;
         } else
             return false;
