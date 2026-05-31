@@ -33,9 +33,10 @@ public class DungeonMixin {
 
     @WrapMethod(method="getRandomEntity")
     public String farnutil_getRandomEntity(Random rand, Operation<String> original) {
-        if(farnutil_random.nextBoolean())
-            return original.call(rand);
+        String mob = DungeonAPI.pickMob(farnutil_random);
+        if(mob != null && farnutil_random.nextBoolean())
+            return mob;
         else
-            return DungeonAPI.pickMob(farnutil_random);
+            return original.call(rand);
     }
 }
