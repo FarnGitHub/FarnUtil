@@ -12,6 +12,7 @@
     "server.ServerNetworkHandlerMixin"
   ],
   "client": [
+    "client.player.PlayerItemTextureMixin",
     "client.player.OtherPlayerMixin",
     "client.MinecraftMixin",
     "client.MixinFovMulti",

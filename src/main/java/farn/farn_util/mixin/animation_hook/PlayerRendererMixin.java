@@ -1,5 +1,6 @@
 package farn.farn_util.mixin.animation_hook;
 
+import farn.farn_util.FarnUtil;
 import farn.farn_util.api.animation_hook.player_render.PlayerRenderEvent;
 import farn.farn_util.api.animation_hook.player_render.ThirdPersonItemRotationEvent;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
@@ -18,20 +19,20 @@ public class PlayerRendererMixin {
         ThirdPersonItemRotationEvent event = new ThirdPersonItemRotationEvent(
                 (PlayerEntityRenderer) (Object) this,tick, player, player.getHand()
         );
-        StationAPI.EVENT_BUS.post(event);
+        FarnUtil.setupEvent(event);
     }
 
     @Inject(method="render(Lnet/minecraft/entity/player/PlayerEntity;DDDFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;render(Lnet/minecraft/entity/LivingEntity;DDDFF)V", shift = At.Shift.BEFORE))
     public void beforeRenderEntity(PlayerEntity player, double d, double e, double f, float g, float h, CallbackInfo ci) {
-        PlayerRenderEvent.Before beforeRender = new PlayerRenderEvent.Before();
-        beforeRender.setVar((PlayerEntityRenderer)(Object)this,player,player.getHand(),d,e,f,g,h);
-        StationAPI.EVENT_BUS.post(beforeRender);
+        PlayerRenderEvent.Before event = new PlayerRenderEvent.Before();
+        event.setVar((PlayerEntityRenderer)(Object)this,player,player.getHand(),d,e,f,g,h);
+        FarnUtil.setupEvent(event);
     }
 
     @Inject(method="render(Lnet/minecraft/entity/player/PlayerEntity;DDDFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;render(Lnet/minecraft/entity/LivingEntity;DDDFF)V", shift = At.Shift.AFTER))
     public void afterRenderEntity(PlayerEntity player, double d, double e, double f, float g, float h, CallbackInfo ci) {
-        PlayerRenderEvent.After afterRender = new PlayerRenderEvent.After();
-        afterRender.setVar((PlayerEntityRenderer)(Object)this,player,player.getHand(),d,e,f,g,h);
-        StationAPI.EVENT_BUS.post(afterRender);
+        PlayerRenderEvent.After event = new PlayerRenderEvent.After();
+        event.setVar((PlayerEntityRenderer)(Object)this,player,player.getHand(),d,e,f,g,h);
+        FarnUtil.setupEvent(event);
     }
 }

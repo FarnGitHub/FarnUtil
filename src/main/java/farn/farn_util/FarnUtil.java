@@ -1,23 +1,20 @@
 package farn.farn_util;
 
-import farn.farn_util.api.particle.ParticleAPI;
-import farn.farn_util.api.static_item.StaticItemRendererAPI;
 import farn.farn_util.impl.item_usage.ItemUsageImplClient;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
+import net.mine_diver.unsafeevents.Event;
 import net.mine_diver.unsafeevents.listener.EventListener;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.StationAPI;
+import net.modificationstation.stationapi.api.event.mod.InitEvent;
 import net.modificationstation.stationapi.api.event.registry.MessageListenerRegistryEvent;
-import net.modificationstation.stationapi.api.event.tick.GameTickEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
+import net.modificationstation.stationapi.api.mod.entrypoint.EntrypointManager;
 import net.modificationstation.stationapi.api.util.Namespace;
 import net.modificationstation.stationapi.api.util.Null;
 import net.modificationstation.stationapi.api.util.SideUtil;
 import org.apache.logging.log4j.Logger;
 
-
+@SuppressWarnings("unused")
 public class FarnUtil {
     @Entrypoint.Namespace
     public static Namespace NAMESPACE;
@@ -27,15 +24,36 @@ public class FarnUtil {
 
     @EventListener
     public void registerPacket(MessageListenerRegistryEvent event) {
-        event.register(NAMESPACE.id("item_usage_api_stop"), (plr, messagePacket) -> {
-            SideUtil.run(() -> {}, plr::farnutil_stopUsingItem);
-        });
-        event.register(NAMESPACE.id("item_usage_api_finished"), (plr, messagePacket) -> {
-            SideUtil.run(plr::farnutil_finishUsingItem, () -> {});
-        });
-        event.register(NAMESPACE.id("item_usage_api_actionUpdated"), (plr, messagePacket) -> {
-            SideUtil.run(() -> ItemUsageImplClient.handleSetActionClient(plr, messagePacket)
-                    ,() -> {});
-        });
+        event.register(NAMESPACE.id("item_usage_api_stop"),
+                (plr, p) ->
+                pickSide(false, plr::farnutil_stopUsingItem)
+        );
+        event.register(NAMESPACE.id("item_usage_api_finished"),
+                (plr, p) ->
+                pickSide(true, plr::farnutil_finishUsingItem)
+        );
+        event.register(NAMESPACE.id("item_usage_api_actionUpdated"),
+                (plr, p) ->
+                pickSide(true, ()->
+                    ItemUsageImplClient.setPlayerAction(p.ints[0], p.booleans[0])
+                )
+        );
+    }
+
+    @EventListener
+    public void farnutilInit(InitEvent event) {
+        FabricLoader.getInstance().getEntrypointContainers("farn_util:init", Object.class).forEach(EntrypointManager::setup);
+    }
+
+    private void pickSide(boolean client, Runnable run) {
+        if(client)
+            SideUtil.run(run, ()->{});
+        else
+            SideUtil.run(()->{}, run);
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    public static <T extends Event> T setupEvent(T t) {
+        return StationAPI.EVENT_BUS.post(t);
     }
 }

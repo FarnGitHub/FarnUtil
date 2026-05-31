@@ -4,6 +4,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+@SuppressWarnings("unused")
 public interface ExtendedItemUsage {
     /**
      * Called when the player stops using an Item (stops holding the right mouse button).
@@ -74,5 +75,27 @@ public interface ExtendedItemUsage {
      */
     default String farnutil_getActionId() {
         return null;
+    }
+
+    /**
+     * Get item texture when using item
+     * if return value is below 0 meaning it will use vanilla getTexture method instead
+     * @param player The Player that using the item.
+     * @param stack the ItemStack instance of that item.
+     * @param duration the current duration.
+     */
+    default int farnutil_getUsingTexture(PlayerEntity player, ItemStack stack, int duration) {
+        return -1;
+    }
+
+    /**
+     * called every 4 tick while using item
+     * @param player The Player that using the item.
+     * @param stack the ItemStack instance of that item.
+     * @param duration the current duration.
+     * @param beforeFinished is method called before item finished using or not.
+     */
+    default void farnutil_usingTick(PlayerEntity player, ItemStack stack, int duration, boolean beforeFinished) {
+
     }
 }

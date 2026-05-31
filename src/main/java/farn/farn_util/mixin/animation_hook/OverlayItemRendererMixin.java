@@ -1,5 +1,6 @@
 package farn.farn_util.mixin.animation_hook;
 
+import farn.farn_util.FarnUtil;
 import farn.farn_util.api.animation_hook.player_render.FirstPersonItemRotationEvent;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.entity.player.ClientPlayerEntity;
@@ -31,6 +32,6 @@ public class OverlayItemRendererMixin {
                 player,
                 stack
         );
-        StationAPI.EVENT_BUS.post(event);
+        FarnUtil.setupEvent(event);
     }
 }

@@ -2,13 +2,18 @@ package farn.farn_util.impl.item_usage.interfaces_impl;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Util;
 
+@SuppressWarnings("unused")
 public interface PlayerItemUsage {
 
     default ItemStack farnutil_getUsingItem() {
+        return Util.assertImpl();
+    }
+
+    default Item farnutil_getUsingItemAsItem() {
         return Util.assertImpl();
     }
 

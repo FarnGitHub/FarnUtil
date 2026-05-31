@@ -1,17 +1,13 @@
 package farn.farn_util.mixin.item_usage.common;
 
-import farn.farn_util.FarnUtil;
+import farn.farn_util.impl.item_usage.ItemUsageImplServer;
 import farn.farn_util.impl.item_usage.interfaces_impl.PlayerItemUsage;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.modificationstation.stationapi.api.network.packet.MessagePacket;
-import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -20,12 +16,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsage {
+public class PlayerMixin implements PlayerItemUsage {
     @Shadow
     public PlayerInventory inventory;
 
     @Shadow
-    public abstract ItemStack getHand();
+    public ItemStack getHand() {
+        throw new AssertionError();
+    }
 
     @Unique
     ItemStack farnutil_stack;
@@ -33,10 +31,6 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
     int farnutil_holdDuration;
     @Unique
     boolean farnutil_hasAction = false;
-
-    public PlayerMixin(World world) {
-        super(world);
-    }
 
     public ItemStack farnutil_getUsingItem() {
         return farnutil_stack;
@@ -55,9 +49,8 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
     }
 
     public void farnutil_stopUsingItem() {
-        if(farnutil_isUsingItem() && farnutil_getUsingItem().getItem() != null) {
-            farnutil_getUsingItem().getItem().farnutil_stopUsingItem(farnutil_getUsingItem(), this.world, (PlayerEntity) (Object)this, farnutil_getUsingDuration());
-        }
+        if(farnutil_isUsingItem() && farnutil_getUsingItemAsItem() != null)
+            farnutil_getUsingItemAsItem().farnutil_stopUsingItem(farnutil_getUsingItem(), farnutil_self().world, farnutil_self(), farnutil_getUsingDuration());
         farnutil_clearUsingItem();
     }
 
@@ -77,8 +70,9 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
 
     public void farnutil_finishUsingItem() {
         if(farnutil_isUsingItem()) {
+            farnutil_getUsingItemAsItem().farnutil_usingTick(farnutil_self(), farnutil_stack, this.farnutil_holdDuration, true);
             int count = farnutil_getUsingItem().count;
-            ItemStack stack = farnutil_getUsingItem().getItem().farnutil_finishUsingItem(farnutil_stack, this.world, (PlayerEntity) (Object)this);
+            ItemStack stack = farnutil_getUsingItem().getItem().farnutil_finishUsingItem(farnutil_stack, farnutil_self().world, farnutil_self());
             if(stack != this.farnutil_stack || stack != null && stack.count != count) {
                 this.inventory.main[this.inventory.selectedSlot] = stack;
                 if(stack.count == 0) {
@@ -90,14 +84,19 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
         }
     }
 
+    public Item farnutil_getUsingItemAsItem() {
+        return this.farnutil_isUsingItem() ? this.farnutil_getUsingItem().getItem() : null;
+    }
+
     @Inject(method="tick", at = @At("HEAD"))
     public void farnutil_tick(CallbackInfo ci) {
         if(farnutil_stack != null) {
             ItemStack itemStack = this.getHand();
             if(itemStack == farnutil_stack) {
-               if(--this.farnutil_holdDuration == 0 && !this.world.isRemote) {
-                   this.farnutil_finishUsingItem();
-               }
+                farnutil_getUsingItemAsItem().farnutil_usingTick((PlayerEntity) (Object) this, farnutil_stack, this.farnutil_holdDuration, false);
+                if(--this.farnutil_holdDuration == 0 && !farnutil_self().world.isRemote) {
+                    this.farnutil_finishUsingItem();
+                }
             } else {
                 this.farnutil_clearUsingItem();
             }
@@ -119,14 +118,9 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
     }
 
     public void farnutil_setHasAction(boolean value) {
-        if(!world.isRemote) {
+        if(!farnutil_self().world.isRemote) {
             farnutil_hasAction = value;
-            if(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
-                MessagePacket packet = new MessagePacket(FarnUtil.NAMESPACE.id("item_usage_api_actionUpdated"));
-                packet.booleans = new boolean[]{value};
-                packet.ints = new int[]{this.id};
-                PacketHelper.sendToAllTracking(this, packet);
-            }
+            ItemUsageImplServer.updateAction(value, farnutil_self());
         }
     }
 
@@ -139,14 +133,13 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerItemUsag
     }
 
     public String farnutil_getActionId() {
-        try {
-            return getHand().getItem().farnutil_getActionId(
-                    (PlayerEntity)(Object) this,
-                    getHand()
-            );
-        } catch (Exception e) {
-            return null;
-        }
+        if(getHand() == null || getHand().getItem() == null) return null;
+        return getHand().getItem().farnutil_getActionId(farnutil_self(),getHand());
+    }
+
+    @SuppressWarnings("MissingUnique")
+    protected PlayerEntity farnutil_self() {
+        return (PlayerEntity)(Object) this;
     }
 
 }
