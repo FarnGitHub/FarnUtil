@@ -8,8 +8,8 @@ import java.util.Collection;
 import java.util.Random;
 
 public class DungeonAPI {
-	private static final ObjectArrayList<DungeonMonster> mobs = new ObjectArrayList<>();
-	private static final ObjectArrayList<DungeonLoot> loots = new ObjectArrayList<>();
+	public static final ObjectArrayList<DungeonMonster> mobs = new ObjectArrayList<>();
+	public static final ObjectArrayList<DungeonLoot> loots = new ObjectArrayList<>();
 	private static int TOTAL_MOB_WEIGHT = 0;
 	private static int TOTAL_LOOT_WEIGHT = 0;
 
@@ -21,12 +21,14 @@ public class DungeonAPI {
 	public static DungeonMonster addMob(String mob, int weight) {
 		DungeonMonster dungeonmonster = new DungeonMonster(mob, weight);
 		mobs.add(dungeonmonster);
+		dungeonmonster.index = mobs.indexOf(dungeonmonster);
 		TOTAL_MOB_WEIGHT = getTotalWeight(mobs, 10);
 		return dungeonmonster;
 	}
 
 	public static DungeonLoot addLoot(DungeonLoot loot) {
 		loots.add(loot);
+		loot.index = loots.indexOf(loot);
 		TOTAL_LOOT_WEIGHT = getTotalWeight(loots, 100);
 		return loot;
 	}

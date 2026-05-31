@@ -29,4 +29,13 @@ public class DungeonLoot extends DungeonWeight {
 		this(stack, min, max);
 		this.weight = weight;
 	}
+
+	@Override
+	public boolean remove() {
+		if(index >= 0) {
+			DungeonAPI.loots.remove(index);
+			return true;
+		} else
+			return false;
+	}
 }

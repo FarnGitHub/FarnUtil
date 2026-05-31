@@ -14,4 +14,13 @@ public class DungeonMonster extends DungeonWeight {
         this(entityId);
         this.weight = weight;
     }
+
+    @Override
+    public boolean remove() {
+        if(index >= 0) {
+            DungeonAPI.mobs.remove(index);
+            return true;
+        } else
+            return false;
+    }
 }
