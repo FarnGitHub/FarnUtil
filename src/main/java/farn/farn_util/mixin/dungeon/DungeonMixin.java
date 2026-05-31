@@ -20,6 +20,7 @@ public class DungeonMixin {
     @Unique
     private final Random farnutil_random = new Random();
 
+    @SuppressWarnings("NameDoesntMatchTargetClass")
     @Inject(method="generate", at = @At("HEAD"))
     public void farnutil_setRandomSeed(World world, Random random, int x, int y, int z, CallbackInfoReturnable<Boolean> cir) {
         farnutil_random.setSeed(world.getSeed() * (x + y + z));
@@ -33,10 +34,11 @@ public class DungeonMixin {
 
     @WrapMethod(method="getRandomEntity")
     public String farnutil_getRandomEntity(Random rand, Operation<String> original) {
+        String ogMob = original.call(rand);
         String mob = DungeonAPI.pickMob(farnutil_random);
         if(mob != null && farnutil_random.nextBoolean())
             return mob;
         else
-            return original.call(rand);
+            return ogMob;
     }
 }
