@@ -1,17 +1,17 @@
 package farn.farn_util.impl.dungeon;
 
 import farn.farn_util.api.dungeon.DungeonLoot;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.item.ItemStack;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class NormalDungeonImpl implements DungeonImpl{
-    private final ArrayList<String> mobs = new ArrayList<>();
-    private final ArrayList<DungeonLoot> loot = new ArrayList<>();
-    private final ArrayList<DungeonLoot> guaranteedLoot = new ArrayList<>();
-    private static final int POSSIBLE_MOB = 4;
-    private static final int POSSIBLE_LOOT = 761;
+    private final ObjectArrayList<String> mobs = new ObjectArrayList<>();
+    private final ObjectArrayList<DungeonLoot> loot = new ObjectArrayList<>();
+    private final ObjectArrayList<DungeonLoot> guaranteedLoot = new ObjectArrayList<>();
+    private static final int VANILLA_MOB = 4;
+    private static final int VANILLA_LOOT = 761;
 
     public void addMob(String s, int i) {
         for(int j = 0; j < i; ++j) {
@@ -32,9 +32,9 @@ public class NormalDungeonImpl implements DungeonImpl{
 
     public String getRandomMob(Random random) {
         if(mobs.isEmpty()) return "";
-        int index = random.nextInt(POSSIBLE_MOB + mobs.size());
-        if(index < POSSIBLE_MOB) return "";
-        return mobs.get(index - POSSIBLE_MOB);
+        int index = random.nextInt(VANILLA_MOB + mobs.size());
+        if(index < VANILLA_MOB) return "";
+        return mobs.get(index - VANILLA_MOB);
     }
 
     public void addLoot(DungeonLoot dungeonloot, int amount) {
@@ -77,8 +77,8 @@ public class NormalDungeonImpl implements DungeonImpl{
 
     public ItemStack getRandomLoots(Random random) {
         if(loot.isEmpty()) return null;
-        int index = random.nextInt(POSSIBLE_LOOT + loot.size());
-        if(index < POSSIBLE_LOOT) return null;
-        return loot.get(index - POSSIBLE_LOOT).getStack(random);
+        int index = random.nextInt(VANILLA_LOOT + loot.size());
+        if(index < VANILLA_LOOT) return null;
+        return loot.get(index - VANILLA_LOOT).getStack(random);
     }
 }

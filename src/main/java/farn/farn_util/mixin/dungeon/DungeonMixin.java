@@ -34,7 +34,7 @@ public class DungeonMixin {
     @Definition(id="loopChestContent", local=@Local(type=int.class, ordinal=13))
     @Expression("loopChestContent < 8")
     @WrapOperation(method="generate", at = @At("MIXINEXTRAS:EXPRESSION"))
-    public boolean modifyChestContentLoop(int left, int right, Operation<Boolean> original, @Local(type=ChestBlockEntity.class) ChestBlockEntity chest) {
+    public boolean farnutil_modifyChestContentLoop(int left, int right, Operation<Boolean> original, @Local(type=ChestBlockEntity.class) ChestBlockEntity chest) {
         boolean continued = original.call(left, right);
         if(!continued) {
             //use it own random to prevent messing up vanilla mob selection
@@ -48,14 +48,14 @@ public class DungeonMixin {
     }
 
     @WrapMethod(method="getRandomChestItem")
-    public ItemStack getChestContent(Random rand, Operation<ItemStack> original) {
+    public ItemStack farnutil_getChestContent(Random rand, Operation<ItemStack> original) {
         ItemStack originalLoot = original.call(rand);
         ItemStack loot = DungeonAPI.getRandomLoots(farnutil_random);
         return loot != null ? loot : originalLoot;
     }
 
     @WrapMethod(method="getRandomEntity")
-    public String getRandomEntity(Random rand, Operation<String> original) {
+    public String farnutil_getRandomEntity(Random rand, Operation<String> original) {
         String originalMob = original.call(rand);
         String mob = DungeonAPI.getRandomMob(farnutil_random);
         return mob != null && !mob.isEmpty() ? mob : originalMob;
