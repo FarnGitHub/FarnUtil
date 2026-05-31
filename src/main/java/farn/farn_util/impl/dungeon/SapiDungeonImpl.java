@@ -26,7 +26,6 @@ public class SapiDungeonImpl implements DungeonImpl{
     @Override
     public void addLoot(DungeonLoot dungeonloot, int amount) {
         SAPI.dungeonAddItem(convert(dungeonloot), amount);
-
     }
 
     @Override
