@@ -11,7 +11,7 @@ public class NormalDungeonImpl implements DungeonImpl{
     private final ObjectArrayList<DungeonLoot> loot = new ObjectArrayList<>();
     private final ObjectArrayList<DungeonLoot> guaranteedLoot = new ObjectArrayList<>();
     private static final int VANILLA_MOB = 4;
-    private static final int VANILLA_LOOT = 761;
+    private static final int VANILLA_LOOT = 350;
 
     public void addMob(String s, int i) {
         for(int j = 0; j < i; ++j) {

@@ -34,12 +34,10 @@ public class DungeonAPI {
 	@SuppressWarnings("unused")
 	public static void addLoot(DungeonLoot dungeonloot) {
 		addLoot(dungeonloot, 100);
-		impl.addLoot(dungeonloot, 100);
 	}
 
 	public static void addLoot(DungeonLoot dungeonloot, int amount) {
 		impl.addLoot(dungeonloot, amount);
-
 	}
 
 	@SuppressWarnings("unused")
