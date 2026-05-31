@@ -60,8 +60,9 @@ public class NormalDungeonImpl implements DungeonImpl{
             addDefaultMobs();
             initMob = true;
         }
+        int index = random.nextInt(mobs.size());
 
-        return mobs.isEmpty() ? "Pig" : mobs.get((random).nextInt(mobs.size()));
+        return mobs.isEmpty() ? "" : mobs.get(index);
     }
 
     public void addLoot(DungeonLoot dungeonloot, int amount) {

@@ -1,10 +1,16 @@
 package farn.farn_util;
 
+import farn.farn_util.api.dungeon.DungeonAPI;
+import farn.farn_util.api.dungeon.DungeonLoot;
+import farn.farn_util.api.dungeon.event.DungeonDefaultLootEvent;
 import farn.farn_util.impl.item_usage.ItemUsageImplClient;
 import net.fabricmc.loader.api.FabricLoader;
 import net.mine_diver.unsafeevents.Event;
 import net.mine_diver.unsafeevents.listener.EventListener;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.StationAPI;
+import net.modificationstation.stationapi.api.event.init.InitFinishedEvent;
 import net.modificationstation.stationapi.api.event.mod.InitEvent;
 import net.modificationstation.stationapi.api.event.registry.MessageListenerRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
@@ -43,6 +49,11 @@ public class FarnUtil {
     @EventListener
     public void farnutilInit(InitEvent event) {
         FabricLoader.getInstance().getEntrypointContainers("farn_util:init", Object.class).forEach(EntrypointManager::setup);
+    }
+
+    @EventListener
+    public void registerDungeonLoot(InitFinishedEvent event) {
+        DungeonAPI.addGuaranteedLoot(new DungeonLoot(new ItemStack(Block.SPONGE)));
     }
 
     private void pickSide(boolean client, Runnable run) {

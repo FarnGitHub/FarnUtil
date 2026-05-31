@@ -9,6 +9,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import farn.farn_util.api.dungeon.DungeonAPI;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.DungeonFeature;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,13 +23,15 @@ public class DungeonMixin {
     @Definition(id="loopChestContent", local=@Local(type=int.class, ordinal=13))
     @Expression("loopChestContent < 8")
     @WrapOperation(method="generate", at = @At("MIXINEXTRAS:EXPRESSION"))
-    public boolean modifyChestContentLoop(int left, int right, Operation<Boolean> original, @Local(type=ChestBlockEntity.class) ChestBlockEntity chestEntity, @Local(argsOnly = true, type = Random.class) Random random) {
+    public boolean modifyChestContentLoop(int left, int right, Operation<Boolean> original, @Local(type=ChestBlockEntity.class) ChestBlockEntity chest, @Local(argsOnly = true, type = World.class) World world) {
         boolean continued = original.call(left, right);
         if(!continued) {
+            //use it own random to prevent messing up vanilla mob selection
+            Random rand = new Random(world.getSeed());
             for(int loop = 0; loop < Math.min(19, DungeonAPI.getGuaranteedLootSize()); ++loop) {
                 ItemStack stack = DungeonAPI.getGuaranteedLoot(loop).getStack();
                 if (stack != null)
-                    chestEntity.setStack(random.nextInt(chestEntity.size()), stack);
+                    chest.setStack(rand.nextInt(chest.size()), stack);
             }
         }
         return continued;
