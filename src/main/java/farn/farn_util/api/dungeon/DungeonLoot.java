@@ -10,6 +10,7 @@ public class DungeonLoot extends DungeonWeight {
 
 	public DungeonLoot(ItemStack stack) {
 		super(100);
+		this.loot = stack;
 	}
 
 	public DungeonLoot(ItemStack stack, int min, int max) {
