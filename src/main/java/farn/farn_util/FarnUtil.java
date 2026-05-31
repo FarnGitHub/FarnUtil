@@ -50,11 +50,6 @@ public class FarnUtil {
         FabricLoader.getInstance().getEntrypointContainers("farn_util:init", Object.class).forEach(EntrypointManager::setup);
     }
 
-    @EventListener
-    public void registerLoot(InitFinishedEvent event) {
-        DungeonAPI.addLoot(new DungeonLoot(new ItemStack(Block.SPONGE)), 100);
-    }
-
     private void pickSide(boolean client, Runnable run) {
         if(client)
             SideUtil.run(run, ()->{});
