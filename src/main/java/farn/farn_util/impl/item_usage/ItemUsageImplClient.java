@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.MultiplayerInteractionManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.ClientWorld;
-import net.modificationstation.stationapi.api.entity.player.PlayerHelper;
 import net.modificationstation.stationapi.api.network.packet.MessagePacket;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 

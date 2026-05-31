@@ -6,6 +6,7 @@
   "mixins": [
     "DungeonMixin"
   ],
+  "plugin": "farn.farn_util.mixin.MixinPlugin",
   "mixinextras": {"minVersion": "0.5.0"},
   "injectors": {
     "defaultRequire": 1

@@ -10,7 +10,6 @@ import farn.farn_util.api.dungeon.DungeonAPI;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.gen.feature.DungeonFeature;
-import net.modificationstation.stationapi.api.StationAPI;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
