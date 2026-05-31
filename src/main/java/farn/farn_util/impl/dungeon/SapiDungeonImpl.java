@@ -19,12 +19,6 @@ public class SapiDungeonImpl implements DungeonImpl{
     }
 
     @Override
-    public void removeAllMobs() {
-        SAPI.dungeonRemoveAllMobs();
-
-    }
-
-    @Override
     public String getRandomMob(Random random) {
         return SAPI.dungeonGetRandomMob();
     }
@@ -53,11 +47,6 @@ public class SapiDungeonImpl implements DungeonImpl{
     @Override
     public void removeLoot(int target) {
         SAPI.dungeonRemoveItem(target);
-    }
-
-    @Override
-    public void removeAllLoots() {
-        SAPI.dungeonRemoveAllItems();
     }
 
     @Override

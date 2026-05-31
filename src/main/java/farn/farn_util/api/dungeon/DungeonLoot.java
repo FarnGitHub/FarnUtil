@@ -21,7 +21,7 @@ public class DungeonLoot {
 		this.max = max;
 	}
 
-	public ItemStack getStack() {
+	public ItemStack getStack(Random random) {
 		int damage = 0;
 		if (this.loot.itemId <= 255) {
 			if (Block.BLOCKS[this.loot.itemId].getColor(1) != 1) {
@@ -31,6 +31,6 @@ public class DungeonLoot {
 			}
 		}
 
-		return new ItemStack(this.loot.getItem(), this.min + (new Random()).nextInt(this.max - this.min + 1), damage);
+		return new ItemStack(this.loot.getItem(), this.min + (random).nextInt(this.max - this.min + 1), damage);
 	}
 }

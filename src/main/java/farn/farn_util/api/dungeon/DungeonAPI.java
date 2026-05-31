@@ -1,12 +1,9 @@
 package farn.farn_util.api.dungeon;
 
-import farn.farn_util.FarnUtil;
-import farn.farn_util.api.dungeon.event.DungeonDefaultLootEvent;
 import farn.farn_util.impl.dungeon.DungeonImpl;
 import farn.farn_util.impl.dungeon.NormalDungeonImpl;
 import farn.farn_util.impl.dungeon.SapiDungeonImpl;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.Random;
@@ -28,11 +25,6 @@ public class DungeonAPI {
 	@SuppressWarnings("unused")
 	public static void removeMob(String s) {
 		impl.removeMob(s);
-	}
-
-	@SuppressWarnings("unused")
-	public static void removeAllMobs() {
-		impl.removeAllMobs();
 	}
 
 	public static String getRandomMob(Random random) {
@@ -68,11 +60,6 @@ public class DungeonAPI {
 	@SuppressWarnings("unused")
 	public static void removeLoot(int i) {
 		impl.removeLoot(i);
-	}
-
-	@SuppressWarnings("unused")
-	public static void removeAllLoots() {
-		impl.removeAllLoots();
 	}
 
 	public static ItemStack getRandomLoots(Random random) {

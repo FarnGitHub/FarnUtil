@@ -2,7 +2,6 @@ package farn.farn_util;
 
 import farn.farn_util.api.dungeon.DungeonAPI;
 import farn.farn_util.api.dungeon.DungeonLoot;
-import farn.farn_util.api.dungeon.event.DungeonDefaultLootEvent;
 import farn.farn_util.impl.item_usage.ItemUsageImplClient;
 import net.fabricmc.loader.api.FabricLoader;
 import net.mine_diver.unsafeevents.Event;
@@ -52,8 +51,8 @@ public class FarnUtil {
     }
 
     @EventListener
-    public void registerDungeonLoot(InitFinishedEvent event) {
-        DungeonAPI.addGuaranteedLoot(new DungeonLoot(new ItemStack(Block.SPONGE)));
+    public void registerLoot(InitFinishedEvent event) {
+        DungeonAPI.addLoot(new DungeonLoot(new ItemStack(Block.SPONGE)), 100);
     }
 
     private void pickSide(boolean client, Runnable run) {

@@ -11,8 +11,6 @@ public interface DungeonImpl {
 
     void removeMob(String mob);
 
-    void removeAllMobs();
-
     String getRandomMob(Random random);
 
     void addLoot(DungeonLoot dungeonloot, int amount);
@@ -24,8 +22,6 @@ public interface DungeonImpl {
     DungeonLoot getGuaranteedLoot(int amount);
 
     void removeLoot(int target);
-
-    void removeAllLoots();
 
     ItemStack getRandomLoots(Random random);
 

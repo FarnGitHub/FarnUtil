@@ -2,9 +2,7 @@ package farn.farn_util.mixin.animation_hook;
 
 import farn.farn_util.FarnUtil;
 import farn.farn_util.api.animation_hook.bipedmodel.BipedModelEvent;
-import farn.farn_util.api.dungeon.event.DungeonDefaultLootEvent;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
-import net.modificationstation.stationapi.api.StationAPI;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
