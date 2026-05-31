@@ -1,6 +1,7 @@
 package farn.farn_util.api.dungeon;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 
 import java.util.Random;
@@ -22,15 +23,6 @@ public class DungeonLoot {
 	}
 
 	public ItemStack getStack(Random random) {
-		int damage = 0;
-		if (this.loot.itemId <= 255) {
-			if (Block.BLOCKS[this.loot.itemId].getColor(1) != 1) {
-				damage = this.loot.getDamage();
-			} else if (!this.loot.getItem().isHandheld()) {
-				damage = this.loot.getDamage();
-			}
-		}
-
-		return new ItemStack(this.loot.getItem(), this.min + (random).nextInt(this.max - this.min + 1), damage);
+		return new ItemStack(this.loot.getItem(), this.min + (random).nextInt(this.max - this.min + 1), loot.getDamage());
 	}
 }
