@@ -32,11 +32,17 @@ public class DungeonLoot extends DungeonWeight {
 
 	@Override
 	public boolean remove() {
-		if(index >= 0) {
-			DungeonAPI.loots.remove(index);
-			index = -1;
+		return DungeonAPI.loots.remove(this);
+	}
+
+	public boolean equals(Object other) {
+		if (this == other)
 			return true;
-		} else
-			return false;
+		else if(other instanceof DungeonLoot dg)
+			return ItemStack.areEqual(this.loot, dg.loot) &&
+				   this.weight == dg.weight &&
+				   this.min == dg.max &&
+				   this.max == dg.max;
+		return false;
 	}
 }

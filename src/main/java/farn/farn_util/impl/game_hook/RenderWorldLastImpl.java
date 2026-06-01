@@ -3,7 +3,6 @@ package farn.farn_util.impl.game_hook;
 import farn.farn_util.FarnUtil;
 import farn.farn_util.api.game_hook.RenderWorldLastEvent;
 import net.minecraft.client.render.WorldRenderer;
-import net.modificationstation.stationapi.api.StationAPI;
 import org.lwjgl.opengl.GL11;
 
 public class RenderWorldLastImpl {

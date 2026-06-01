@@ -21,14 +21,12 @@ public class DungeonAPI {
 	public static DungeonMonster addMob(String mob, int weight) {
 		DungeonMonster dungeonmonster = new DungeonMonster(mob, weight);
 		mobs.add(dungeonmonster);
-		dungeonmonster.index = mobs.indexOf(dungeonmonster);
 		TOTAL_MOB_WEIGHT = getTotalWeight(mobs, 10);
 		return dungeonmonster;
 	}
 
 	public static DungeonLoot addLoot(DungeonLoot loot) {
 		loots.add(loot);
-		loot.index = loots.indexOf(loot);
 		TOTAL_LOOT_WEIGHT = getTotalWeight(loots, 100);
 		return loot;
 	}

@@ -1,6 +1,7 @@
 package farn.farn_util.api.dungeon;
 
 import farn.farn_util.impl.dungeon.DungeonWeight;
+import java.util.Objects;
 
 public class DungeonMonster extends DungeonWeight {
     public String entityId;
@@ -17,11 +18,15 @@ public class DungeonMonster extends DungeonWeight {
 
     @Override
     public boolean remove() {
-        if(index >= 0) {
-            DungeonAPI.mobs.remove(index);
-            index = -1;
+        return DungeonAPI.mobs.remove(this);
+    }
+
+    public boolean equals(Object other) {
+        if (this == other)
             return true;
-        } else
-            return false;
+        else if(other instanceof DungeonMonster dg)
+            return Objects.equals(this.entityId, dg.entityId) &&
+                   this.weight == dg.weight;
+        return false;
     }
 }
