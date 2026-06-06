@@ -5,9 +5,9 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "farn.farn_util.mixin.MixinPlugin",
   "client": [
-    "item_renderer.ArsenicItemRendererMixin",
-    "item_renderer.Dropped3DItemMixin",
-    "item_renderer.Arsenic3DJsonCompatMixin",
+    "static_item.ArsenicItemRendererMixin",
+    "static_item.Dropped3DItemMixin",
+    "static_item.Arsenic3DJsonCompatMixin",
     "particle.ParticleManagerMixin",
     "entity_model_flag.EntityModelMixin",
     "game_hook.GameRendererMixin"

@@ -1,4 +1,4 @@
-package farn.farn_util.mixin.item_renderer;
+package farn.farn_util.mixin.static_item;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
