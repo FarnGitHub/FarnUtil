@@ -45,7 +45,7 @@ public class FarnUtil {
 
     @EventListener
     public void registerPacket(PacketRegisterEvent event) {
-        event.register(NAMESPACE.id("entity_id_tracker_update"), EntityIDTrackerUpdatePacket.TYPE);
+        event.register(NAMESPACE.id("entity_tracker_update"), EntityIDTrackerUpdatePacket.TYPE);
         event.register(NAMESPACE.id("living_spawn"), LivingEntitySpawnPacket.TYPE);
     }
 

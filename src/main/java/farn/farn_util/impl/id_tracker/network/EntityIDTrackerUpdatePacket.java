@@ -37,7 +37,12 @@ public class EntityIDTrackerUpdatePacket extends Packet implements ManagedPacket
 
     @Override
     public void read(DataInputStream stream) {
-
+        try {
+            this.id = stream.readInt();
+            this.trackedValues = IDDataTracker.readEntries(stream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
