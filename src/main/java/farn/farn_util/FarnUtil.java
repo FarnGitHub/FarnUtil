@@ -1,16 +1,14 @@
 package farn.farn_util;
 
-import farn.farn_util.api.dungeon.DungeonAPI;
-import farn.farn_util.api.dungeon.DungeonLoot;
+import farn.farn_util.impl.id_tracker.network.EntityIDTrackerUpdatePacket;
+import farn.farn_util.impl.id_tracker.network.LivingEntitySpawnPacket;
 import farn.farn_util.impl.item_usage.ItemUsageImplClient;
 import net.fabricmc.loader.api.FabricLoader;
 import net.mine_diver.unsafeevents.Event;
 import net.mine_diver.unsafeevents.listener.EventListener;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.StationAPI;
-import net.modificationstation.stationapi.api.event.init.InitFinishedEvent;
 import net.modificationstation.stationapi.api.event.mod.InitEvent;
+import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
 import net.modificationstation.stationapi.api.event.registry.MessageListenerRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.mod.entrypoint.EntrypointManager;
@@ -28,7 +26,7 @@ public class FarnUtil {
     public static Logger LOGGER = Null.get();
 
     @EventListener
-    public void registerPacket(MessageListenerRegistryEvent event) {
+    public void registerMessagePacket(MessageListenerRegistryEvent event) {
         event.register(NAMESPACE.id("item_usage_api_stop"),
                 (plr, p) ->
                 pickSide(false, plr::farnutil_stopUsingItem)
@@ -43,6 +41,12 @@ public class FarnUtil {
                     ItemUsageImplClient.setPlayerAction(p.ints[0], p.booleans[0])
                 )
         );
+    }
+
+    @EventListener
+    public void registerPacket(PacketRegisterEvent event) {
+        event.register(NAMESPACE.id("entity_id_tracker_update"), EntityIDTrackerUpdatePacket.TYPE);
+        event.register(NAMESPACE.id("living_spawn"), LivingEntitySpawnPacket.TYPE);
     }
 
     @EventListener

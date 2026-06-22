@@ -15,7 +15,8 @@
     "farn_util.mixins.json",
     "farn_util_item_usage.mixins.json",
     "farn_util_animation_hook.mixin.json",
-    "farn_util_dungeon.mixins.json"
+    "farn_util_dungeon.mixins.json",
+    "farn_util_idtracker.mixin.json"
   ],
   "entrypoints": {
     "stationapi:event_bus": [
