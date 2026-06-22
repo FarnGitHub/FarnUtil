@@ -6,10 +6,11 @@
   "plugin": "farn.farn_util.mixin.MixinPlugin",
   "mixins": [
     "EntityMixin",
-    "MobSpawnDataProviderMixin"
+    "stationapi.provider.MobSpawnDataProviderMixin",
+    "stationapi.provider.EntitySpawnDataProviderMixin"
   ],
   "client": [
-    "EntityClientNetWorkHandlerMixin"
+    "stationapi.EntityClientNetWorkHandlerMixin"
   ],
   "server": [
     "EntityTrackerEntryMixin"

@@ -2,7 +2,8 @@ package farn.farn_util.mixin.id_tracker;
 
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import farn.farn_util.api.id_tracker.IDDataTracker;
 import farn.farn_util.impl.id_tracker.network.EntityIDTrackerUpdatePacket;
 import farn.farn_util.impl.id_tracker.network.LivingEntitySpawnPacket;
@@ -37,9 +38,9 @@ public abstract class EntityTrackerEntryMixin {
     }
 
     @Definition(id="LivingEntitySpawnS2CPacket", type = LivingEntitySpawnS2CPacket.class)
-    @Expression("return new LivingEntitySpawnS2CPacket(?)")
-    @ModifyReturnValue(method="createAddEntityPacket", at = @At("MIXINEXTRAS:EXPRESSION"))
-    public Packet farnutil_reDirectLivingEntityPacker(Packet original) {
-        return new LivingEntitySpawnPacket((LivingEntity)this.currentTrackedEntity);
+    @Expression("new LivingEntitySpawnS2CPacket(?)")
+    @WrapOperation(method="createAddEntityPacket", at = @At("MIXINEXTRAS:EXPRESSION"))
+    public LivingEntitySpawnS2CPacket farnutil_reDirectLivingEntityPacker(LivingEntity living, Operation<LivingEntitySpawnS2CPacket> original) {
+        return new LivingEntitySpawnPacket(living);
     }
 }

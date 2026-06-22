@@ -6,11 +6,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.EntityRegistry;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.DataTrackerEntry;
 import net.minecraft.network.NetworkHandler;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.network.packet.s2c.play.LivingEntitySpawnS2CPacket;
 import net.minecraft.world.ClientWorld;
 import net.modificationstation.stationapi.api.entity.player.PlayerHelper;
 import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
@@ -23,47 +20,25 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class LivingEntitySpawnPacket extends Packet implements ManagedPacket<LivingEntitySpawnPacket> {
-    public int id;
-    public byte entityType;
-    public int x;
-    public int y;
-    public int z;
-    public byte yaw;
-    public byte pitch;
-    private DataTracker dataTracker;
-    private List<DataTrackerEntry> trackedValues;
+public class LivingEntitySpawnPacket extends LivingEntitySpawnS2CPacket implements ManagedPacket<LivingEntitySpawnPacket> {
     private IDDataTracker idDataTracker;
     private List<IDDataTrackerEntry> idTrackedValues;
 
     public static final PacketType<LivingEntitySpawnPacket> TYPE = PacketType.builder(true, false, LivingEntitySpawnPacket::new).build();
 
     public LivingEntitySpawnPacket() {
+        super();
     }
 
     public LivingEntitySpawnPacket(LivingEntity livingEntity) {
-        this.id = livingEntity.id;
-        this.entityType = (byte)EntityRegistry.getRawId(livingEntity);
-        this.x = MathHelper.floor(livingEntity.x * 32.0);
-        this.y = MathHelper.floor(livingEntity.y * 32.0);
-        this.z = MathHelper.floor(livingEntity.z * 32.0);
-        this.yaw = (byte)((int)(livingEntity.yaw * 256.0F / 360.0F));
-        this.pitch = (byte)((int)(livingEntity.pitch * 256.0F / 360.0F));
-        this.dataTracker = livingEntity.getDataTracker();
+        super(livingEntity);
         this.idDataTracker = livingEntity.farnutil_getIdDataTracker();
     }
 
     @Override
     public void read(DataInputStream stream) {
         try {
-            this.id = stream.readInt();
-            this.entityType = stream.readByte();
-            this.x = stream.readInt();
-            this.y = stream.readInt();
-            this.z = stream.readInt();
-            this.yaw = stream.readByte();
-            this.pitch = stream.readByte();
-            this.trackedValues = DataTracker.readEntries(stream);
+            super.read(stream);
             this.idTrackedValues = IDDataTracker.readEntries(stream);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -73,14 +48,7 @@ public class LivingEntitySpawnPacket extends Packet implements ManagedPacket<Liv
     @Override
     public void write(DataOutputStream stream) {
         try {
-            stream.writeInt(this.id);
-            stream.writeByte(this.entityType);
-            stream.writeInt(this.x);
-            stream.writeInt(this.y);
-            stream.writeInt(this.z);
-            stream.writeByte(this.yaw);
-            stream.writeByte(this.pitch);
-            this.dataTracker.writeAllEntries(stream);
+            super.write(stream);
             this.idDataTracker.writeAllEntries(stream);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -108,15 +76,10 @@ public class LivingEntitySpawnPacket extends Packet implements ManagedPacket<Liv
         entity.setPositionAndAngles(x, y, z, yaw, pitch);
         entity.interpolateOnly = true;
         clientWorld.forceEntity(this.id, entity);
-        if (this.trackedValues != null)
-            entity.getDataTracker().writeUpdatedEntries(this.trackedValues);
+        if (this.getTrackedValues() != null)
+            entity.getDataTracker().writeUpdatedEntries(this.getTrackedValues());
         if(this.idTrackedValues != null)
             entity.farnutil_getIdDataTracker().writeUpdatedEntries(this.idTrackedValues);
-    }
-
-    @Override
-    public int size() {
-        return 20;
     }
 
     @Override

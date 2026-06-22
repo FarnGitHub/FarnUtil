@@ -38,6 +38,9 @@ public class IDDataTracker {
         }
     }
 
+
+    //String getter start
+
     public byte getByte(String id) {
         return (Byte)(this.entries.get(id)).get();
     }
@@ -50,6 +53,10 @@ public class IDDataTracker {
         return (String)(this.entries.get(id)).get();
     }
 
+    //String getter end
+
+    //Identifier getter start
+
     public byte getByte(Identifier id) {
         return getByte(id.toString());
     }
@@ -61,6 +68,8 @@ public class IDDataTracker {
     public String getString(Identifier id) {
         return getString(id.toString());
     }
+
+    //Identifier getter end
 
     public void set(String id, Object object) {
         IDDataTrackerEntry entry = this.entries.get(id);
@@ -134,15 +143,19 @@ public class IDDataTracker {
                 break;
             case 5:
                 ItemStack stack = (ItemStack)entry.get();
-                output.writeShort(stack.getItem().id);
+                output.writeInt(stack.getItem().id);
                 output.writeByte(stack.count);
                 output.writeShort(stack.getDamage());
                 break;
             case 6:
-                Vec3i var3 = (Vec3i)entry.get();
-                output.writeInt(var3.x);
-                output.writeInt(var3.y);
-                output.writeInt(var3.z);
+                Vec3i vec = (Vec3i)entry.get();
+                output.writeInt(vec.x);
+                output.writeInt(vec.y);
+                output.writeInt(vec.z);
+            case 7:
+                output.writeDouble((Double) entry.get());
+            case 8:
+                output.writeLong((Long) entry.get());
         }
 
     }
@@ -176,16 +189,22 @@ public class IDDataTracker {
                     entry = new IDDataTrackerEntry(type, key, Packet.readString(input, 64));
                     break;
                 case 5:
-                    short var9 = input.readShort();
-                    byte var10 = input.readByte();
-                    short var11 = input.readShort();
-                    entry = new IDDataTrackerEntry(type, key, new ItemStack(var9, var10, var11));
+                    int itemId = input.readInt();
+                    byte count = input.readByte();
+                    short meta = input.readShort();
+                    entry = new IDDataTrackerEntry(type, key, new ItemStack(itemId, count, meta));
                     break;
                 case 6:
-                    int var6 = input.readInt();
-                    int var7 = input.readInt();
-                    int var8 = input.readInt();
-                    entry = new IDDataTrackerEntry(type, key, new Vec3i(var6, var7, var8));
+                    int x = input.readInt();
+                    int y = input.readInt();
+                    int z = input.readInt();
+                    entry = new IDDataTrackerEntry(type, key, new Vec3i(x, y, z));
+                    break;
+                case 7:
+                    entry = new IDDataTrackerEntry(type, key, input.readDouble());
+                    break;
+                case 8:
+                    entry = new IDDataTrackerEntry(type, key, input.readLong());
             }
 
             list.add(entry);
@@ -218,5 +237,7 @@ public class IDDataTracker {
         DATA_TYPES.put(String.class, 4);
         DATA_TYPES.put(ItemStack.class, 5);
         DATA_TYPES.put(Vec3i.class, 6);
+        DATA_TYPES.put(Double.class, 7);
+        DATA_TYPES.put(Long.class, 8);
     }
 }
