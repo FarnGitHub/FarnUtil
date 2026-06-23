@@ -53,6 +53,10 @@ public class IDDataTracker {
         return (String)(this.entries.get(id)).get();
     }
 
+    public <T> T get(String id) {
+        return (T)this.entries.get(id).get();
+    }
+
     //String getter end
 
     //Identifier getter start
@@ -69,6 +73,10 @@ public class IDDataTracker {
         return getString(id.toString());
     }
 
+    public <T> T getObject(String id) {
+        return get(id);
+    }
+
     //Identifier getter end
 
     public void set(String id, Object object) {
@@ -78,7 +86,10 @@ public class IDDataTracker {
             entry.setDirty(true);
             this.dirty = true;
         }
+    }
 
+    public void set(Identifier id, Object object) {
+        this.set(id.toString(), object);
     }
 
     @Environment(EnvType.SERVER)

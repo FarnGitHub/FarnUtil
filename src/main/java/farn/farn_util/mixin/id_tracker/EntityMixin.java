@@ -20,5 +20,6 @@ public class EntityMixin implements EntityIDTrackerImpl {
     @Inject(method="<init>", at = @At("TAIL"))
     public void farnutil_idTrackerInit(World world, CallbackInfo ci) {
         farnutil_initIdDataTracker();
+        int test = farnutil_getIdDataTracker().get("test");
     }
 }
