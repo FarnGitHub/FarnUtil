@@ -2,8 +2,6 @@ package farn.farn_util.api.id_tracker;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.math.Vec3i;
@@ -13,6 +11,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -26,33 +25,36 @@ public class IDDataTracker {
     }
 
     public void startTracking(String key, Object value) {
+        if(key == null || key.isEmpty())
+            throw new IllegalArgumentException("Invalid key");
+
         int type = DATA_TYPES.getInt(value.getClass());
-        if (type < 0) {
+        if (type < 0)
             throw new IllegalArgumentException("Unknown data type: " + value.getClass());
-        } else if (key.length() > 32767) {
+        else if (key.length() > 32767)
             throw new IllegalArgumentException("Key too big! (Max is 32767)");
-        } else if (this.entries.containsKey(key)) {
+        else if (this.entries.containsKey(key))
             throw new IllegalArgumentException("Duplicate id value for " + key + "!");
-        } else {
+        else
             this.entries.put(key, new IDDataTrackerEntry(type, key, value));
-        }
     }
 
 
     //String getter start
 
     public byte getByte(String id) {
-        return (Byte)(this.entries.get(id)).get();
+        return get(id);
     }
 
     public int getInt(String id) {
-        return (Integer)(this.entries.get(id)).get();
+        return get(id);
     }
 
     public String getString(String id) {
-        return (String)(this.entries.get(id)).get();
+        return get(id);
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T get(String id) {
         return (T)this.entries.get(id).get();
     }
@@ -62,19 +64,19 @@ public class IDDataTracker {
     //Identifier getter start
 
     public byte getByte(Identifier id) {
-        return getByte(id.toString());
+        return get(id);
     }
 
     public int getInt(Identifier id) {
-        return getInt(id.toString());
+        return get(id);
     }
 
     public String getString(Identifier id) {
-        return getString(id.toString());
+        return get(id);
     }
 
-    public <T> T getObject(String id) {
-        return get(id);
+    public <T> T get(Identifier id) {
+        return get(id.toString());
     }
 
     //Identifier getter end
@@ -92,7 +94,6 @@ public class IDDataTracker {
         this.set(id.toString(), object);
     }
 
-    @Environment(EnvType.SERVER)
     public boolean isDirty() {
         return this.dirty;
     }
@@ -106,24 +107,22 @@ public class IDDataTracker {
         }
     }
 
-    @Environment(EnvType.SERVER)
     public ArrayList<IDDataTrackerEntry> getDirtyEntries() {
-        ArrayList<IDDataTrackerEntry> var1 = null;
+        ArrayList<IDDataTrackerEntry> list = null;
         if (this.dirty) {
-            for(IDDataTrackerEntry var3 : this.entries.values()) {
-                if (var3.isDirty()) {
-                    var3.setDirty(false);
-                    if (var1 == null) {
-                        var1 = new ArrayList<>();
-                    }
+            for(IDDataTrackerEntry entry : this.entries.values()) {
+                if (entry.isDirty()) {
+                    entry.setDirty(false);
+                    if (list == null)
+                        list = new ArrayList<>();
 
-                    var1.add(var3);
+                    list.add(entry);
                 }
             }
         }
 
         this.dirty = false;
-        return var1;
+        return list;
     }
 
     public void writeAllEntries(DataOutputStream output) throws IOException {
@@ -224,7 +223,6 @@ public class IDDataTracker {
         return list;
     }
 
-    @Environment(EnvType.CLIENT)
     public void writeUpdatedEntries(List<IDDataTrackerEntry> entries) {
         for(IDDataTrackerEntry var3 : entries) {
             IDDataTrackerEntry entry = this.entries.get(var3.getId());
@@ -235,8 +233,8 @@ public class IDDataTracker {
 
     }
 
-    public boolean isEmpty() {
-        return this.entries.isEmpty();
+    public Collection<IDDataTrackerEntry> getValues() {
+        return this.entries.values();
     }
 
     static {

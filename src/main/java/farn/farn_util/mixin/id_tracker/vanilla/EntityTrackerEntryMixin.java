@@ -1,4 +1,4 @@
-package farn.farn_util.mixin.id_tracker;
+package farn.farn_util.mixin.id_tracker.vanilla;
 
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;

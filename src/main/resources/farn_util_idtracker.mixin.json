@@ -5,15 +5,16 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "farn.farn_util.mixin.MixinPlugin",
   "mixins": [
-    "EntityMixin",
+    "vanilla.EntityMixin",
     "stationapi.provider.MobSpawnDataProviderMixin",
     "stationapi.provider.EntitySpawnDataProviderMixin"
   ],
   "client": [
-    "stationapi.EntityClientNetWorkHandlerMixin"
+    "stationapi.EntityClientNetWorkHandlerMixin",
+    "vanilla.ClientNetworkMixin"
   ],
   "server": [
-    "EntityTrackerEntryMixin"
+    "vanilla.EntityTrackerEntryMixin"
   ],
   "mixinextras": {"minVersion": "0.5.0"},
   "injectors": {

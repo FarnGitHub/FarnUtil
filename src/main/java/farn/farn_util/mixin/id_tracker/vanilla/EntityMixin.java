@@ -1,4 +1,4 @@
-package farn.farn_util.mixin.id_tracker;
+package farn.farn_util.mixin.id_tracker.vanilla;
 
 import farn.farn_util.api.id_tracker.IDDataTracker;
 import farn.farn_util.impl.id_tracker.EntityIDTrackerImpl;
@@ -20,6 +20,5 @@ public class EntityMixin implements EntityIDTrackerImpl {
     @Inject(method="<init>", at = @At("TAIL"))
     public void farnutil_idTrackerInit(World world, CallbackInfo ci) {
         farnutil_initIdDataTracker();
-        int test = farnutil_getIdDataTracker().get("test");
     }
 }
