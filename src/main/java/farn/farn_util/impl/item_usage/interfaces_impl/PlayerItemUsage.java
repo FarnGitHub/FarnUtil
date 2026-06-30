@@ -58,18 +58,6 @@ public interface PlayerItemUsage {
         return Util.assertImpl();
     }
 
-    default boolean farnutil_hasAction() {
-        return Util.assertImpl();
-    }
-
-    default void farnutil_setHasAction(boolean value) {
-        Util.assertImpl();
-    }
-
-    default void farnutil_setHasActionOnly(boolean value) {
-        Util.assertImpl();
-    }
-
     default String farnutil_getActionId() {
         return Util.assertImpl();
     }

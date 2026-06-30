@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "common.PlayerMixin",
-    "common.ItemMixin"
+    "common.ItemMixin",
+    "common.LivingEntityMixin"
   ],
   "server": [
     "server.ServerPlayerMixin",

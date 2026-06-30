@@ -29,8 +29,8 @@ public class SpawnDataProviderImpl {
 
     public static void beforeEntityMessageWrite(MessagePacket message, Entity mob, boolean syncTracker) {
         message.ints = Arrays.copyOf(message.ints, 6);
-        message.ints[5] = message.bytes.length;
-        if(!syncTracker) return;
+        message.ints[5] = message.bytes != null ? message.bytes.length : -1;
+        if(!syncTracker || message.bytes == null) return;
 
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -58,8 +58,8 @@ public class SpawnDataProviderImpl {
 
     public static void readIDTrackerEntity(MessagePacket message, Entity entity) {
         try {
-            int vaniilaDataSize = message.ints[4];
-            List<IDDataTrackerEntry> data = IDDataTracker.readEntries(new DataInputStream(new ByteArrayInputStream(Arrays.copyOfRange(message.bytes, vaniilaDataSize, message.bytes.length))));
+            int vanillaDataSize = message.ints[5];
+            List<IDDataTrackerEntry> data = IDDataTracker.readEntries(new DataInputStream(new ByteArrayInputStream(Arrays.copyOfRange(message.bytes, vanillaDataSize, message.bytes.length))));
             if(data != null)
                 entity.farnutil_getIdDataTracker().writeUpdatedEntries(data);
         } catch (ArrayIndexOutOfBoundsException ignored) {

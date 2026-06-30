@@ -29,8 +29,6 @@ public class PlayerMixin implements PlayerItemUsage {
     ItemStack farnutil_stack;
     @Unique
     int farnutil_holdDuration;
-    @Unique
-    boolean farnutil_hasAction = false;
 
     public ItemStack farnutil_getUsingItem() {
         return farnutil_stack;
@@ -58,14 +56,14 @@ public class PlayerMixin implements PlayerItemUsage {
         if(stack != farnutil_stack) {
             farnutil_stack = stack;
             farnutil_holdDuration = duration;
-            farnutil_setHasAction(true);
+            farnutil_self().farnutil_setHasAction(true);
         }
     }
 
     public void farnutil_clearUsingItem() {
         farnutil_setUsingItem(null);
         farnutil_setUsingDuration(0);
-        farnutil_setHasAction(false);
+        farnutil_self().farnutil_setHasAction(false);
     }
 
     public void farnutil_finishUsingItem() {
@@ -111,21 +109,6 @@ public class PlayerMixin implements PlayerItemUsage {
     @Environment(EnvType.CLIENT)
     public float farnutil_getFovMultiplier() {
         return 1.0F;
-    }
-
-    public boolean farnutil_hasAction() {
-        return farnutil_hasAction;
-    }
-
-    public void farnutil_setHasAction(boolean value) {
-        if(!farnutil_self().world.isRemote) {
-            farnutil_hasAction = value;
-            ItemUsageImplServer.updateAction(value, farnutil_self());
-        }
-    }
-
-    public void farnutil_setHasActionOnly(boolean value) {
-        farnutil_hasAction = value;
     }
 
     public boolean farnutil_hasActionId(String str) {

@@ -20,11 +20,4 @@ public class ItemUsageImplClient {
         }
         player.farnutil_stopUsingItem();
     }
-
-    @Environment(EnvType.CLIENT)
-    public static void setPlayerAction(int playerId, boolean value) {
-        if(Minecraft.INSTANCE.world instanceof ClientWorld clientWorld)
-            if(clientWorld.getEntity(playerId) instanceof PlayerEntity target)
-                target.farnutil_setHasActionOnly(value);
-    }
 }

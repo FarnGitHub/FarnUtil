@@ -35,12 +35,6 @@ public class FarnUtil {
                 (plr, p) ->
                 pickSide(true, plr::farnutil_finishUsingItem)
         );
-        event.register(NAMESPACE.id("item_usage_api_actionUpdated"),
-                (plr, p) ->
-                pickSide(true, ()->
-                    ItemUsageImplClient.setPlayerAction(p.ints[0], p.booleans[0])
-                )
-        );
     }
 
     @EventListener
