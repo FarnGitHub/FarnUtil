@@ -166,6 +166,8 @@ public class IDDataTracker {
                 output.writeDouble((Double) entry.get());
             case 8:
                 output.writeLong((Long) entry.get());
+            case 9:
+                output.writeBoolean((Boolean) entry.get());
         }
 
     }
@@ -215,6 +217,9 @@ public class IDDataTracker {
                     break;
                 case 8:
                     entry = new IDDataTrackerEntry(type, key, input.readLong());
+                    break;
+                case 9:
+                    entry = new IDDataTrackerEntry(type, key, input.readBoolean());
             }
 
             list.add(entry);
@@ -248,5 +253,6 @@ public class IDDataTracker {
         DATA_TYPES.put(Vec3i.class, 6);
         DATA_TYPES.put(Double.class, 7);
         DATA_TYPES.put(Long.class, 8);
+        DATA_TYPES.put(Boolean.class, 9);
     }
 }
