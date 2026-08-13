@@ -10,7 +10,8 @@
     "static_item.Arsenic3DJsonCompatMixin",
     "particle.ParticleManagerMixin",
     "entity_model_flag.EntityModelMixin",
-    "game_hook.GameRendererMixin"
+    "game_hook.GameRendererMixin",
+    "custom_atlas.AtlasLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

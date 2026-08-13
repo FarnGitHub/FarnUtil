@@ -24,7 +24,8 @@
     ],
     "stationapi:event_bus_client": [
       "farn.farn_util.impl.item_usage.ItemUsageImplClient",
-      "farn.farn_util.impl.particle.ParticleWorldHook"
+      "farn.farn_util.impl.particle.ParticleWorldHook",
+      "farn.farn_util.impl.custom_atlas.CustomAtlasListener"
     ]
   },
   "depends": {
