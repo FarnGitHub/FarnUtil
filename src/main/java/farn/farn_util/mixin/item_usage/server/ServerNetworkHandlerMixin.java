@@ -19,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 /**
  * Ungodly amount of expression mixin
- * i hate doing this
  */
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerNetworkHandlerMixin {

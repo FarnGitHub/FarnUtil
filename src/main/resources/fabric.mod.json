@@ -15,16 +15,16 @@
     "farn_util.mixins.json",
     "farn_util_item_usage.mixins.json",
     "farn_util_animation_hook.mixin.json",
-    "farn_util_dungeon.mixins.json",
     "farn_util_idtracker.mixin.json"
   ],
   "entrypoints": {
     "stationapi:event_bus": [
-      "farn.farn_util.FarnUtil"
+      "farn.farn_util.FarnUtil",
+      "farn.farn_util.impl.item_usage.ItemUsageListener"
     ],
     "stationapi:event_bus_client": [
       "farn.farn_util.impl.item_usage.ItemUsageImplClient",
-      "farn.farn_util.impl.particle.ParticleWorldHook",
+      "farn.farn_util.impl.particle.CustomPaticleImpl",
       "farn.farn_util.impl.custom_atlas.CustomAtlasListener"
     ]
   },

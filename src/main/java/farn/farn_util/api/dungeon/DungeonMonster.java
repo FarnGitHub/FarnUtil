@@ -1,6 +1,5 @@
 package farn.farn_util.api.dungeon;
 
-import farn.farn_util.impl.dungeon.DungeonWeight;
 import java.util.Objects;
 
 public class DungeonMonster extends DungeonWeight {

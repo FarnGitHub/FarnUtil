@@ -3,16 +3,20 @@ package farn.farn_util.api.custom_atlas;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.mine_diver.unsafeevents.Event;
-import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.Namespace;
 
 @Environment(EnvType.CLIENT)
 public class CustomAtlasRegisterEvent extends Event {
 
-    public CustomAtlas registerBlockAtlas(String texturePath, Identifier baseId) {
-        return new CustomAtlas(texturePath, baseId, false);
+    public CustomAtlas ofBlock(Namespace namespace, String texturePath) {
+        return of(namespace, texturePath, false);
     }
 
-    public CustomAtlas registerItemAtlas(String texturePath, Identifier baseId) {
-        return new CustomAtlas(texturePath, baseId, true);
+    public CustomAtlas ofItem(Namespace namespace, String texturePath) {
+        return of(namespace, texturePath, true);
+    }
+
+    private CustomAtlas of(Namespace namespace, String texturePath, boolean itemAtlas) {
+        return CustomAtlas.of(namespace, texturePath, itemAtlas);
     }
 }

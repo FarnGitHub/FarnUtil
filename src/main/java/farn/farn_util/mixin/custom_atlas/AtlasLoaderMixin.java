@@ -1,6 +1,6 @@
 package farn.farn_util.mixin.custom_atlas;
 
-import farn.farn_util.api.custom_atlas.CustomAtlasRegistry;
+import farn.farn_util.api.custom_atlas.CustomAtlas;
 import net.modificationstation.stationapi.api.client.texture.atlas.AtlasLoader;
 import net.modificationstation.stationapi.api.client.texture.atlas.AtlasSource;
 import org.spongepowered.asm.mixin.Final;
@@ -21,6 +21,6 @@ public class AtlasLoaderMixin {
 
     @Inject(method="<init>", at = @At("TAIL"))
     public void farnutil_addAllAtlas(CallbackInfo ci) {
-        this.sources.addAll(CustomAtlasRegistry.generateAllSource());
+        this.sources.addAll(CustomAtlas.getAtlasSources());
     }
 }

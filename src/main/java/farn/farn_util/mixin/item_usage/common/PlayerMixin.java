@@ -1,6 +1,5 @@
 package farn.farn_util.mixin.item_usage.common;
 
-import farn.farn_util.impl.item_usage.ItemUsageImplServer;
 import farn.farn_util.impl.item_usage.interfaces_impl.PlayerItemUsage;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

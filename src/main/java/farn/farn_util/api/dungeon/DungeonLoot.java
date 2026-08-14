@@ -1,6 +1,5 @@
 package farn.farn_util.api.dungeon;
 
-import farn.farn_util.impl.dungeon.DungeonWeight;
 import net.minecraft.item.ItemStack;
 
 @SuppressWarnings("unused")

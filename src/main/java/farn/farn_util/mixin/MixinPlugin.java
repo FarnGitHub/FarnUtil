@@ -24,9 +24,6 @@ public class MixinPlugin implements IMixinConfigPlugin {
         if(mixinClassName.equals("farn.farn_util.mixin.item_renderer.Dropped3DItemMixin") || mixinClassName.equals("farn.farn_util.mixin.item_renderer.Arsenic3DJsonCompatMixin")) {
             return FabricLoader.getInstance().isModLoaded("item_3d");
         }
-        /*if(mixinClassName.equals("farn.farn_util.mixin.dungeon.DungeonMixin")) {
-            return !FabricLoader.getInstance().isModLoaded("shockahpi");
-        }*/
         return true;
     }
 

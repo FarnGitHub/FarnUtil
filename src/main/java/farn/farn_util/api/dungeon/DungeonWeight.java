@@ -1,4 +1,4 @@
-package farn.farn_util.impl.dungeon;
+package farn.farn_util.api.dungeon;
 
 public abstract class DungeonWeight {
     public int weight;

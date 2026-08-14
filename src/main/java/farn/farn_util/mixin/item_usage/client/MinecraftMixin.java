@@ -2,7 +2,7 @@ package farn.farn_util.mixin.item_usage.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import farn.farn_util.impl.item_usage.mixin_impl.MinecraftImpl;
+import farn.farn_util.impl.item_usage.ItemUsageImplClient;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,7 +14,7 @@ public class MinecraftMixin {
 
     @Inject(method="tick", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;getEventButtonState()Z", ordinal = 1, shift = At.Shift.BEFORE))
     public void farnutil_onStopUsingItem(CallbackInfo ci) {
-        MinecraftImpl.handleStopUsingItem();
+        ItemUsageImplClient.handleStopUsingItem();
     }
 
     @WrapOperation(method="tick", at = {
@@ -23,7 +23,7 @@ public class MinecraftMixin {
             @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;getEventButtonState()Z", ordinal = 3)}
     )
     public boolean farnutil_isUsingItemAndClick(Operation<Boolean> original) {
-        return MinecraftImpl.preventSingleUseWhenUsing(original);
+        return ItemUsageImplClient.preventSingleUseWhenUsing(original);
     }
 
     @WrapOperation(method="tick", at = {
@@ -31,6 +31,6 @@ public class MinecraftMixin {
             @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;focused:Z", ordinal = 2)
     })
     public boolean farnutil_isNotUsingItem(Minecraft instance, Operation<Boolean> original) {
-        return MinecraftImpl.preventSingleUseWhenUsing2(instance, original);
+        return ItemUsageImplClient.preventSingleUseWhenUsing2(instance, original);
     }
 }

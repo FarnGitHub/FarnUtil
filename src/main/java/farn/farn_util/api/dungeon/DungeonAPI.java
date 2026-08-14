@@ -1,6 +1,5 @@
 package farn.farn_util.api.dungeon;
 
-import farn.farn_util.impl.dungeon.DungeonWeight;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.item.ItemStack;
 
