@@ -3,8 +3,9 @@ package farn.farn_util.impl.id_tracker;
 import farn.farn_util.FarnUtil;
 import farn.farn_util.api.id_tracker.data_type.DataTypes;
 import farn.farn_util.api.id_tracker.data_type.data.minecraft.ItemStackDataType;
-import farn.farn_util.api.id_tracker.data_type.data.minecraft.NbtDataType;
+import farn.farn_util.api.id_tracker.data_type.data.minecraft.NbtCompoundDataType;
 import farn.farn_util.api.id_tracker.data_type.data.java.StringDataType;
+import farn.farn_util.api.id_tracker.data_type.data.minecraft.Vec3DDataType;
 import farn.farn_util.api.id_tracker.data_type.data.minecraft.Vec3IDataType;
 import farn.farn_util.api.id_tracker.data_type.data.java.BooleanDataType;
 import farn.farn_util.api.id_tracker.data_type.data.java.number.*;
@@ -36,6 +37,7 @@ public class IDTrackerListener {
         event.register(DataTypes.BOOLEAN = new BooleanDataType());
         event.register(DataTypes.ITEMSTACK = new ItemStackDataType());
         event.register(DataTypes.VEC3I = new Vec3IDataType());
-        event.register(DataTypes.NBT = new NbtDataType());
+        event.register(DataTypes.NBT_COMPOUND = new NbtCompoundDataType());
+        event.register(DataTypes.VEC3D = new Vec3DDataType());
     }
 }

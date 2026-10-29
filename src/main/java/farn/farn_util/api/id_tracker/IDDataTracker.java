@@ -2,10 +2,12 @@ package farn.farn_util.api.id_tracker;
 
 import farn.farn_util.api.id_tracker.data_type.DataType;
 import farn.farn_util.api.id_tracker.data_type.registry.DataTypeRegistry;
+import farn.farn_util.impl.id_tracker.Class2DataTypeLegacyMapper;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.network.packet.Packet;
 import net.modificationstation.stationapi.api.util.Identifier;
 
+import javax.annotation.Nullable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -19,21 +21,18 @@ public class IDDataTracker {
     private final Reference2ObjectOpenHashMap<Identifier, IDDataTrackerEntry<?>> entries = new Reference2ObjectOpenHashMap<>();
     private boolean dirty;
 
-    public <T> void startTracking(Identifier key, T value) {
-        DataType<?> type = DataTypeRegistry.INSTANCE.get(value.getClass());
-        if (type == null)
-            throw new IllegalArgumentException("Unknown data type: " + value.getClass());
-        else if (this.entries.containsKey(key))
-            throw new IllegalArgumentException("Duplicate id value for " + key + "!");
-        else
-            startTracking(key, value, type);
+    public <T> void startTracking(Identifier id, DataType<T> type, @Nullable T value) {
+        if(value == null)
+            value = type.defaultValue();
 
-    }
-
-    public <T> void startTracking(Identifier key, T value, DataType<?> type) {
+        if (this.entries.containsKey(id))
+            throw new IllegalArgumentException("Duplicate id value for " + id + "!");
+        if(!DataTypeRegistry.INSTANCE.containsId(type.id()))
+            throw new IllegalArgumentException("DataType " + type.id() + " hasn't been registered yet!");
         if(!(type.classType().isAssignableFrom(value.getClass())))
-            throw new IllegalArgumentException("No data type for: " + key);
-        this.entries.put(key, new IDDataTrackerEntry<>(type, key, value));
+            throw new IllegalArgumentException("Cannot use DataType " + type.id() + " on " + id + "!");
+
+        this.entries.put(id, new IDDataTrackerEntry<>(type, id, value));
     }
 
     public byte getByte(Identifier id) {
@@ -120,7 +119,7 @@ public class IDDataTracker {
             Identifier id = Identifier.of(Packet.readString(input, 32767));
             DataType<?> type = DataTypeRegistry.INSTANCE.get(input.readInt());
             if(type == null)
-                throw new RuntimeException("Unknown data type of " + id);
+                throw new RuntimeException("Unknown data type for " + id);
             IDDataTrackerEntry<?> entry = type.readData(input, id);
             list.add(entry);
         }
@@ -164,5 +163,15 @@ public class IDDataTracker {
     @Deprecated
     public void startTracking(String key, Object value) {
         startTracking(Identifier.of(key), value);
+    }
+
+    @Deprecated
+    public <T> void startTracking(Identifier key, T value) {
+        if(value == null)
+            throw new NullPointerException(key + " cannot be null!, this method shouldn't even be used");
+        DataType<T> type = Class2DataTypeLegacyMapper.get(value);
+        if(type == null)
+            throw new NullPointerException("Cannot find DataType for " + key + ", this method shouldn't even be used");
+        startTracking(key, type, value);
     }
 }

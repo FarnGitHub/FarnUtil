@@ -29,4 +29,9 @@ public class LongDataType implements DataType<Long> {
         return Long.class;
     }
 
+    @Override
+    public Long defaultValue() {
+        return 0L;
+    }
+
 }

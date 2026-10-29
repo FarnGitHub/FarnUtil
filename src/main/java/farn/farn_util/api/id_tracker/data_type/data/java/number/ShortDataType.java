@@ -28,4 +28,9 @@ public class ShortDataType implements DataType<Short> {
     public Class<Short> classType() {
         return Short.class;
     }
+
+    @Override
+    public Short defaultValue() {
+        return 0;
+    }
 }

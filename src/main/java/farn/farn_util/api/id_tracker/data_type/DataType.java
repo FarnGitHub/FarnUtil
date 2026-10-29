@@ -17,6 +17,8 @@ public interface DataType<T> {
 
     Class<T> classType();
 
+    T defaultValue();
+
     default void writeDataRaw(DataOutputStream output, IDDataTrackerEntry<?> entry) throws IOException {
         //noinspection unchecked
         writeData(output, (IDDataTrackerEntry<T>) entry);

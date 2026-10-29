@@ -29,4 +29,9 @@ public class StringDataType implements DataType<String> {
         return String.class;
     }
 
+    @Override
+    public String defaultValue() {
+        return "";
+    }
+
 }

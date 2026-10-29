@@ -1,8 +1,9 @@
 package farn.farn_util.api.id_tracker.data_type;
 
 import farn.farn_util.api.id_tracker.data_type.data.minecraft.ItemStackDataType;
-import farn.farn_util.api.id_tracker.data_type.data.minecraft.NbtDataType;
+import farn.farn_util.api.id_tracker.data_type.data.minecraft.NbtCompoundDataType;
 import farn.farn_util.api.id_tracker.data_type.data.java.StringDataType;
+import farn.farn_util.api.id_tracker.data_type.data.minecraft.Vec3DDataType;
 import farn.farn_util.api.id_tracker.data_type.data.minecraft.Vec3IDataType;
 import farn.farn_util.api.id_tracker.data_type.data.java.BooleanDataType;
 import farn.farn_util.api.id_tracker.data_type.data.java.number.*;
@@ -18,5 +19,6 @@ public class DataTypes {
     public static BooleanDataType BOOLEAN;
     public static ItemStackDataType ITEMSTACK;
     public static Vec3IDataType VEC3I;
-    public static NbtDataType NBT;
+    public static NbtCompoundDataType NBT_COMPOUND;
+    public static Vec3DDataType VEC3D;
 }

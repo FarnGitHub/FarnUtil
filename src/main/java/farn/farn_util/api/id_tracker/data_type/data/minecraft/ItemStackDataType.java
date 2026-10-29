@@ -39,4 +39,9 @@ public class ItemStackDataType implements DataType<ItemStack> {
     public Class<ItemStack> classType() {
         return ItemStack.class;
     }
+
+    @Override
+    public ItemStack defaultValue() {
+        return null;
+    }
 }

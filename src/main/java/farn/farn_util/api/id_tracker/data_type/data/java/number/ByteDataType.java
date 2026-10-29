@@ -28,4 +28,9 @@ public class ByteDataType implements DataType<Byte> {
     public Class<Byte> classType() {
         return Byte.class;
     }
+
+    @Override
+    public Byte defaultValue() {
+        return 0;
+    }
 }

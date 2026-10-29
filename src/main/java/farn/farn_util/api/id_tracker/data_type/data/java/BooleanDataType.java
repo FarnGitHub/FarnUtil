@@ -28,4 +28,9 @@ public class BooleanDataType implements DataType<Boolean> {
     public Class<Boolean> classType() {
         return Boolean.class;
     }
+
+    @Override
+    public Boolean defaultValue() {
+        return true;
+    }
 }

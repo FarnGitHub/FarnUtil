@@ -28,4 +28,9 @@ public class DoubleDataType implements DataType<Double> {
     public Class<Double> classType() {
         return Double.class;
     }
+
+    @Override
+    public Double defaultValue() {
+        return 0.0;
+    }
 }

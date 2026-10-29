@@ -13,6 +13,7 @@ import net.modificationstation.stationapi.api.event.init.InitFinishedEvent;
 import net.modificationstation.stationapi.api.event.mod.InitEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.mod.entrypoint.EntrypointManager;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
 import org.apache.logging.log4j.Logger;
 
@@ -36,5 +37,9 @@ public class FarnUtil {
     @SuppressWarnings("UnusedReturnValue")
     public static <T extends Event> T setupEvent(T t) {
         return StationAPI.EVENT_BUS.post(t);
+    }
+
+    public static Identifier id(String id) {
+        return NAMESPACE.id(id);
     }
 }

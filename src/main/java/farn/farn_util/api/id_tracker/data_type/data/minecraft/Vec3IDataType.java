@@ -35,4 +35,9 @@ public class Vec3IDataType implements DataType<Vec3i> {
     public Class<Vec3i> classType() {
         return Vec3i.class;
     }
+
+    @Override
+    public Vec3i defaultValue() {
+        return new Vec3i(0, 0, 0);
+    }
 }

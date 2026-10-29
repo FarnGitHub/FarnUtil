@@ -29,4 +29,9 @@ public class FloatDataType implements DataType<Float> {
         return Float.class;
     }
 
+    @Override
+    public Float defaultValue() {
+        return 0f;
+    }
+
 }

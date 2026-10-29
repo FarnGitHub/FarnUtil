@@ -28,4 +28,9 @@ public class IntegerDataType implements DataType<Integer> {
     public Class<Integer> classType() {
         return Integer.class;
     }
+
+    @Override
+    public Integer defaultValue() {
+        return 0;
+    }
 }
