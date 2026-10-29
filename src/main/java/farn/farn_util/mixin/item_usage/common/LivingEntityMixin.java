@@ -15,7 +15,7 @@ public class LivingEntityMixin implements LivingItemUsage {
 
     @Inject(method="<init>", at = @At("TAIL"))
     public void farnutil_initAction(World world, CallbackInfo ci) {
-        ((LivingEntity)(Object)this).farnutil_getIdDataTracker().startTracking(FarnUtil.id("action"), DataTypes.BOOLEAN, false);
+        ((LivingEntity)(Object)this).farnutil_getIdDataTracker().startTracking(FarnUtil.id("action"), false);
     }
 
     public boolean farnutil_hasAction() {

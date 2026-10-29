@@ -1,6 +1,7 @@
 package farn.farn_util.api.id_tracker;
 
 import farn.farn_util.api.id_tracker.data_type.DataType;
+import farn.farn_util.api.id_tracker.data_type.DataTypes;
 import farn.farn_util.api.id_tracker.data_type.registry.DataTypeRegistry;
 import farn.farn_util.impl.id_tracker.Class2DataTypeLegacyMapper;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
@@ -11,10 +12,7 @@ import javax.annotation.Nullable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public class IDDataTracker {
@@ -28,14 +26,69 @@ public class IDDataTracker {
         if (this.entries.containsKey(id))
             throw new IllegalArgumentException("Duplicate id value for " + id + "!");
         if(!DataTypeRegistry.INSTANCE.containsId(type.id()))
-            throw new IllegalArgumentException("DataType " + type.id() + " hasn't been registered yet!");
-        if(!(type.classType().isAssignableFrom(value.getClass())))
-            throw new IllegalArgumentException("Cannot use DataType " + type.id() + " on " + id + "!");
+            throw new IllegalArgumentException(type.id() + " DataType hasn't been registered yet!");
+        if(!(type.classType().isInstance(value)))
+            throw new IllegalArgumentException("Cannot use " + type.id() + " DataType on " + id + "!");
 
         this.entries.put(id, new IDDataTrackerEntry<>(type, id, value));
     }
 
+    public <T> T get(Identifier id) {
+        IDDataTrackerEntry<?> entry = this.entries.get(id);
+        if(entry == null)
+            throw new IllegalArgumentException("No data with id " + id + "!");
+        //noinspection unchecked
+        return (T)entry.get();
+    }
+
+    public <T> void set(Identifier id, T value) {
+        IDDataTrackerEntry<?> entry = this.entries.get(id);
+        if(entry == null)
+            throw new IllegalArgumentException("No data with id " + id + "!");
+        if (!Objects.equals(value, entry.get())) {
+            entry.setWithCheck(value);
+            entry.setDirty(true);
+            this.dirty = true;
+        }
+    }
+
+    public void startTracking(Identifier id, byte value) {
+        startTracking(id, DataTypes.BYTE, value);
+    }
+
+    public void startTracking(Identifier id, short value) {
+        startTracking(id, DataTypes.SHORT, value);
+    }
+
+    public void startTracking(Identifier id, int value) {
+        startTracking(id, DataTypes.INTEGER, value);
+    }
+
+    public void startTracking(Identifier id, long value) {
+        startTracking(id, DataTypes.LONG, value);
+    }
+
+    public void startTracking(Identifier id, float value) {
+        startTracking(id, DataTypes.FLOAT, value);
+    }
+
+    public void startTracking(Identifier id, double value) {
+        startTracking(id, DataTypes.DOUBLE, value);
+    }
+
+    public void startTracking(Identifier id, boolean value) {
+        startTracking(id, DataTypes.BOOLEAN, value);
+    }
+
+    public void startTracking(Identifier id, String value) {
+        startTracking(id, DataTypes.STRING, value);
+    }
+
     public byte getByte(Identifier id) {
+        return get(id);
+    }
+
+    public short getShort(Identifier id) {
         return get(id);
     }
 
@@ -43,27 +96,24 @@ public class IDDataTracker {
         return get(id);
     }
 
-    public String getString(Identifier id) {
+    public long getLong(Identifier id) {
         return get(id);
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T get(Identifier id) {
-        return (T)entries.get(id).get();
+    public float getFloat(Identifier id) {
+        return get(id);
     }
 
-    public <T> void set(Identifier id, T object) {
-        @SuppressWarnings("unchecked")
-        IDDataTrackerEntry<T> entry = (IDDataTrackerEntry<T>)this.entries.get(id);
-        if (!object.equals(entry.get())) {
-            entry.set(object);
-            entry.setDirty(true);
-            this.dirty = true;
-        }
+    public double getDouble(Identifier id) {
+        return get(id);
     }
 
-    public void set(String id, Object object) {
-        this.set(Identifier.of(id), object);
+    public boolean getBoolean(Identifier id) {
+        return get(id);
+    }
+
+    public String getString(Identifier id) {
+        return get(id);
     }
 
     public boolean isDirty() {
@@ -131,13 +181,28 @@ public class IDDataTracker {
     public void writeUpdatedEntries(List<IDDataTrackerEntry<?>> entries) {
         for(IDDataTrackerEntry<?> data : entries) {
             IDDataTrackerEntry<?> entry = this.entries.get(data.getId());
-            if (entry != null) entry.setRaw(data.get());
+            if (entry != null) entry.setWithCheck(data.get());
         }
 
     }
 
     public Collection<IDDataTrackerEntry<?>> values() {
         return this.entries.values();
+    }
+
+    @Deprecated
+    public <T> void startTracking(String key, T value) {
+        startTracking(Identifier.of(key), value);
+    }
+
+    @Deprecated
+    public <T> void startTracking(Identifier key, T value) {
+        if(value == null)
+            throw new NullPointerException(key + " cannot be null!, this method shouldn't even be used");
+        DataType<T> type = Class2DataTypeLegacyMapper.get(value);
+        if(type == null)
+            throw new NullPointerException("Cannot find DataType for " + key + ", this method shouldn't even be used");
+        startTracking(key, type, value);
     }
 
     @Deprecated
@@ -161,17 +226,7 @@ public class IDDataTracker {
     }
 
     @Deprecated
-    public void startTracking(String key, Object value) {
-        startTracking(Identifier.of(key), value);
-    }
-
-    @Deprecated
-    public <T> void startTracking(Identifier key, T value) {
-        if(value == null)
-            throw new NullPointerException(key + " cannot be null!, this method shouldn't even be used");
-        DataType<T> type = Class2DataTypeLegacyMapper.get(value);
-        if(type == null)
-            throw new NullPointerException("Cannot find DataType for " + key + ", this method shouldn't even be used");
-        startTracking(key, type, value);
+    public void set(String id, Object object) {
+        this.set(Identifier.of(id), object);
     }
 }
