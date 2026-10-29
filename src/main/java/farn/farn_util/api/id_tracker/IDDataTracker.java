@@ -1,10 +1,9 @@
 package farn.farn_util.api.id_tracker;
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
-import net.minecraft.item.ItemStack;
+import farn.farn_util.api.id_tracker.data_type.DataType;
+import farn.farn_util.api.id_tracker.data_type.registry.DataTypeRegistry;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.util.math.Vec3i;
 import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.io.DataInputStream;
@@ -12,56 +11,30 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class IDDataTracker {
-    private static final Reference2IntOpenHashMap<Class<?>> DATA_TYPES = new Reference2IntOpenHashMap<>();
-    private final Object2ObjectOpenHashMap<String, IDDataTrackerEntry> entries = new Object2ObjectOpenHashMap<>();
+    private final Reference2ObjectOpenHashMap<Identifier, IDDataTrackerEntry<?>> entries = new Reference2ObjectOpenHashMap<>();
     private boolean dirty;
 
-    public void startTracking(Identifier key, Object value) {
-        startTracking(key.toString(), value);
-    }
-
-    public void startTracking(String key, Object value) {
-        if(key == null || key.isEmpty())
-            throw new IllegalArgumentException("Invalid key");
-
-        int type = DATA_TYPES.getInt(value.getClass());
-        if (type < 0)
+    public <T> void startTracking(Identifier key, T value) {
+        DataType<?> type = DataTypeRegistry.INSTANCE.get(value.getClass());
+        if (type == null)
             throw new IllegalArgumentException("Unknown data type: " + value.getClass());
-        else if (key.length() > 32767)
-            throw new IllegalArgumentException("Key too big! (Max is 32767)");
         else if (this.entries.containsKey(key))
             throw new IllegalArgumentException("Duplicate id value for " + key + "!");
         else
-            this.entries.put(key, new IDDataTrackerEntry(type, key, value));
+            startTracking(key, value, type);
+
     }
 
-
-    //String getter start
-
-    public byte getByte(String id) {
-        return get(id);
+    public <T> void startTracking(Identifier key, T value, DataType<?> type) {
+        if(!(type.classType().isAssignableFrom(value.getClass())))
+            throw new IllegalArgumentException("No data type for: " + key);
+        this.entries.put(key, new IDDataTrackerEntry<>(type, key, value));
     }
-
-    public int getInt(String id) {
-        return get(id);
-    }
-
-    public String getString(String id) {
-        return get(id);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T get(String id) {
-        return (T)this.entries.get(id).get();
-    }
-
-    //String getter end
-
-    //Identifier getter start
 
     public byte getByte(Identifier id) {
         return get(id);
@@ -75,14 +48,14 @@ public class IDDataTracker {
         return get(id);
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T get(Identifier id) {
-        return get(id.toString());
+        return (T)entries.get(id).get();
     }
 
-    //Identifier getter end
-
-    public void set(String id, Object object) {
-        IDDataTrackerEntry entry = this.entries.get(id);
+    public <T> void set(Identifier id, T object) {
+        @SuppressWarnings("unchecked")
+        IDDataTrackerEntry<T> entry = (IDDataTrackerEntry<T>)this.entries.get(id);
         if (!object.equals(entry.get())) {
             entry.set(object);
             entry.setDirty(true);
@@ -90,32 +63,29 @@ public class IDDataTracker {
         }
     }
 
-    public void set(Identifier id, Object object) {
-        this.set(id.toString(), object);
+    public void set(String id, Object object) {
+        this.set(Identifier.of(id), object);
     }
 
     public boolean isDirty() {
         return this.dirty;
     }
 
-    public static void writeEntries(List<IDDataTrackerEntry> entries, DataOutputStream output) throws IOException {
+    public static void writeEntries(List<IDDataTrackerEntry<?>> entries, DataOutputStream output) throws IOException {
         if (entries != null) {
             output.writeInt(entries.size());
-            for(IDDataTrackerEntry var3 : entries) {
-                writeEntry(output, var3);
+            for(IDDataTrackerEntry<?> entry : entries) {
+                writeEntry(output, entry);
             }
         }
     }
 
-    public ArrayList<IDDataTrackerEntry> getDirtyEntries() {
-        ArrayList<IDDataTrackerEntry> list = null;
+    public ArrayList<IDDataTrackerEntry<?>> getDirtyEntries() {
+        ArrayList<IDDataTrackerEntry<?>> list = new ArrayList<>();
         if (this.dirty) {
-            for(IDDataTrackerEntry entry : this.entries.values()) {
+            for(IDDataTrackerEntry<?> entry : this.entries.values()) {
                 if (entry.isDirty()) {
                     entry.setDirty(false);
-                    if (list == null)
-                        list = new ArrayList<>();
-
                     list.add(entry);
                 }
             }
@@ -127,132 +97,72 @@ public class IDDataTracker {
 
     public void writeAllEntries(DataOutputStream output) throws IOException {
         output.writeInt(this.entries.size());
-        for(IDDataTrackerEntry entry : this.entries.values()) {
-            writeEntry(output, entry);
+        for(IDDataTrackerEntry<?> entry : this.entries.values()) {
+           writeEntry(output, entry);
         }
     }
 
-    private static void writeEntry(DataOutputStream output, IDDataTrackerEntry entry) throws IOException {
-        Packet.writeString(entry.getId(), output);
-        output.writeByte(entry.getDataTypeId());
-        switch (entry.getDataTypeId()) {
-            case 0:
-                output.writeByte((Byte)entry.get());
-                break;
-            case 1:
-                output.writeShort((Short)entry.get());
-                break;
-            case 2:
-                output.writeInt((Integer)entry.get());
-                break;
-            case 3:
-                output.writeFloat((Float)entry.get());
-                break;
-            case 4:
-                Packet.writeString((String)entry.get(), output);
-                break;
-            case 5:
-                ItemStack stack = (ItemStack)entry.get();
-                output.writeInt(stack.getItem().id);
-                output.writeByte(stack.count);
-                output.writeShort(stack.getDamage());
-                break;
-            case 6:
-                Vec3i vec = (Vec3i)entry.get();
-                output.writeInt(vec.x);
-                output.writeInt(vec.y);
-                output.writeInt(vec.z);
-            case 7:
-                output.writeDouble((Double) entry.get());
-            case 8:
-                output.writeLong((Long) entry.get());
-            case 9:
-                output.writeBoolean((Boolean) entry.get());
-        }
-
+    private static void writeEntry(DataOutputStream output, IDDataTrackerEntry<?> entry) throws IOException {
+        Packet.writeString(entry.getId().toString(), output);
+        output.writeInt(DataTypeRegistry.INSTANCE.getRawId(entry.getType()));
+        entry.getType().writeDataRaw(output, entry);
     }
 
-    public static List<IDDataTrackerEntry> readEntries(DataInputStream input) throws IOException{
-        List<IDDataTrackerEntry> list;
+    public static List<IDDataTrackerEntry<?>> readEntries(DataInputStream input) throws IOException{
+        List<IDDataTrackerEntry<?>> list;
 
         int size = input.readInt();
 
-        if(size <= 0) return null;
+        if(size <= 0) return Collections.emptyList();
         else list = new ArrayList<>();
 
         for(int index = 0; index < size; index++) {
-            String key = Packet.readString(input, 32767);
-            int type = input.readByte();
-            IDDataTrackerEntry entry = null;
-            switch (type) {
-                case 0:
-                    entry = new IDDataTrackerEntry(type, key, input.readByte());
-                    break;
-                case 1:
-                    entry = new IDDataTrackerEntry(type, key, input.readShort());
-                    break;
-                case 2:
-                    entry = new IDDataTrackerEntry(type, key, input.readInt());
-                    break;
-                case 3:
-                    entry = new IDDataTrackerEntry(type, key, input.readFloat());
-                    break;
-                case 4:
-                    entry = new IDDataTrackerEntry(type, key, Packet.readString(input, 64));
-                    break;
-                case 5:
-                    int itemId = input.readInt();
-                    byte count = input.readByte();
-                    short meta = input.readShort();
-                    entry = new IDDataTrackerEntry(type, key, new ItemStack(itemId, count, meta));
-                    break;
-                case 6:
-                    int x = input.readInt();
-                    int y = input.readInt();
-                    int z = input.readInt();
-                    entry = new IDDataTrackerEntry(type, key, new Vec3i(x, y, z));
-                    break;
-                case 7:
-                    entry = new IDDataTrackerEntry(type, key, input.readDouble());
-                    break;
-                case 8:
-                    entry = new IDDataTrackerEntry(type, key, input.readLong());
-                    break;
-                case 9:
-                    entry = new IDDataTrackerEntry(type, key, input.readBoolean());
-            }
-
+            Identifier id = Identifier.of(Packet.readString(input, 32767));
+            DataType<?> type = DataTypeRegistry.INSTANCE.get(input.readInt());
+            if(type == null)
+                throw new RuntimeException("Unknown data type of " + id);
+            IDDataTrackerEntry<?> entry = type.readData(input, id);
             list.add(entry);
         }
 
         return list;
     }
 
-    public void writeUpdatedEntries(List<IDDataTrackerEntry> entries) {
-        for(IDDataTrackerEntry var3 : entries) {
-            IDDataTrackerEntry entry = this.entries.get(var3.getId());
-            if (entry != null) {
-                entry.set(var3.get());
-            }
+
+    public void writeUpdatedEntries(List<IDDataTrackerEntry<?>> entries) {
+        for(IDDataTrackerEntry<?> data : entries) {
+            IDDataTrackerEntry<?> entry = this.entries.get(data.getId());
+            if (entry != null) entry.setRaw(data.get());
         }
 
     }
 
-    public Collection<IDDataTrackerEntry> getValues() {
+    public Collection<IDDataTrackerEntry<?>> values() {
         return this.entries.values();
     }
 
-    static {
-        DATA_TYPES.defaultReturnValue(-1);
-        DATA_TYPES.put(Byte.class, 0);
-        DATA_TYPES.put(Short.class, 1);
-        DATA_TYPES.put(Integer.class, 2);
-        DATA_TYPES.put(Float.class, 3);
-        DATA_TYPES.put(String.class, 4);
-        DATA_TYPES.put(ItemStack.class, 5);
-        DATA_TYPES.put(Vec3i.class, 6);
-        DATA_TYPES.put(Double.class, 7);
-        DATA_TYPES.put(Long.class, 8);
-        DATA_TYPES.put(Boolean.class, 9);
+    @Deprecated
+    public byte getByte(String id) {
+        return getByte(Identifier.of(id));
+    }
+
+    @Deprecated
+    public int getInt(String id) {
+        return getInt(Identifier.of(id));
+    }
+
+    @Deprecated
+    public String getString(String id) {
+        return getString(Identifier.of(id));
+    }
+
+    @Deprecated
+    public <T> T get(String id) {
+        return get(Identifier.of(id));
+    }
+
+    @Deprecated
+    public void startTracking(String key, Object value) {
+        startTracking(Identifier.of(key), value);
     }
 }

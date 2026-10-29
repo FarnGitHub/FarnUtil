@@ -1,8 +1,8 @@
 package farn.farn_util.impl.item_usage;
 
 import farn.farn_util.FarnUtil;
-import farn.farn_util.impl.id_tracker.network.EntityIDTrackerUpdatePacket;
-import farn.farn_util.impl.id_tracker.network.LivingEntitySpawnPacket;
+import farn.farn_util.impl.id_tracker.network.IDTrackerUpdatePacket;
+import farn.farn_util.impl.id_tracker.network.IDTrackerInitPacket;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
 import net.modificationstation.stationapi.api.event.registry.MessageListenerRegistryEvent;
@@ -20,12 +20,6 @@ public class ItemUsageListener {
                 (plr, p) ->
                         pickSide(true, plr::farnutil_finishUsingItem)
         );
-    }
-
-    @EventListener
-    public void registerPacket(PacketRegisterEvent event) {
-        event.register(FarnUtil.NAMESPACE.id("entity_tracker_update"), EntityIDTrackerUpdatePacket.TYPE);
-        event.register(FarnUtil.NAMESPACE.id("living_spawn"), LivingEntitySpawnPacket.TYPE);
     }
 
     private void pickSide(boolean client, Runnable run) {

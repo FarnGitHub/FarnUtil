@@ -19,26 +19,26 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class EntityIDTrackerUpdatePacket extends Packet implements ManagedPacket<EntityIDTrackerUpdatePacket> {
-    public int id;
-    private List<IDDataTrackerEntry> trackedValues;
-    public static final PacketType<EntityIDTrackerUpdatePacket> TYPE = PacketType.builder(true, false, EntityIDTrackerUpdatePacket::new).build();
+public class IDTrackerUpdatePacket extends Packet implements ManagedPacket<IDTrackerUpdatePacket> {
+    public int entityId;
+    private List<IDDataTrackerEntry<?>> trackedValues;
+    public static final PacketType<IDTrackerUpdatePacket> TYPE = PacketType.builder(true, false, IDTrackerUpdatePacket::new).build();
 
-    public EntityIDTrackerUpdatePacket() {
+    public IDTrackerUpdatePacket() {
         super();
     }
 
     @Environment(EnvType.SERVER)
-    public EntityIDTrackerUpdatePacket(int entityId, IDDataTracker dataTracker) {
+    public IDTrackerUpdatePacket(int entityId, IDDataTracker dataTracker) {
         super();
-        this.id = entityId;
+        this.entityId = entityId;
         this.trackedValues = dataTracker.getDirtyEntries();
     }
 
     @Override
     public void read(DataInputStream stream) {
         try {
-            this.id = stream.readInt();
+            this.entityId = stream.readInt();
             this.trackedValues = IDDataTracker.readEntries(stream);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -48,7 +48,7 @@ public class EntityIDTrackerUpdatePacket extends Packet implements ManagedPacket
     @Override
     public void write(DataOutputStream stream) {
         try {
-            stream.writeInt(this.id);
+            stream.writeInt(this.entityId);
             IDDataTracker.writeEntries(this.trackedValues, stream);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -57,13 +57,13 @@ public class EntityIDTrackerUpdatePacket extends Packet implements ManagedPacket
 
     @Override
     public void apply(NetworkHandler networkHandler) {
-        SideUtil.run(this::applyClient, () -> {});
-
+        SideUtil.runClient(this::applyClient);
     }
 
     @Environment(EnvType.CLIENT)
     public void applyClient() {
-        Entity entity = ((ClientWorld) PlayerHelper.getPlayerFromGame().world).getEntity(id);
+        ClientWorld clientWorld = ((ClientWorld)PlayerHelper.getPlayerFromGame().world);
+        Entity entity = clientWorld.getEntity(this.entityId);
         if (entity != null && trackedValues != null) {
             entity.farnutil_getIdDataTracker().writeUpdatedEntries(trackedValues);
         }
@@ -71,11 +71,11 @@ public class EntityIDTrackerUpdatePacket extends Packet implements ManagedPacket
 
     @Override
     public int size() {
-        return 5;
+        return 4;
     }
 
     @Override
-    public @NotNull PacketType<EntityIDTrackerUpdatePacket> getType() {
+    public @NotNull PacketType<IDTrackerUpdatePacket> getType() {
         return TYPE;
     }
 }

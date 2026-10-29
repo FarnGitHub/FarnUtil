@@ -1,44 +1,48 @@
 package farn.farn_util.api.id_tracker;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import farn.farn_util.api.id_tracker.data_type.DataType;
+import net.modificationstation.stationapi.api.util.Identifier;
 
-public class IDDataTrackerEntry {
-    private final int dataTypeId;
-    private final String id;
-    private Object value;
+public class IDDataTrackerEntry<T> {
+    private final DataType<?> type;
+    private final Identifier id;
+    private T value;
     private boolean dirty;
 
-    public IDDataTrackerEntry(int dataTypeId, String id, Object value) {
+    public IDDataTrackerEntry(DataType<?> type, Identifier id, T value) {
         super();
         this.id = id;
         this.value = value;
-        this.dataTypeId = dataTypeId;
+        this.type = type;
         this.dirty = true;
     }
 
-    public String getId() {
+    public Identifier getId() {
         return this.id;
     }
 
-    public void set(Object value) {
+    public void set(T value) {
         this.value = value;
     }
 
-    public Object get() {
+    public T get() {
         return this.value;
     }
 
-    public int getDataTypeId() {
-        return this.dataTypeId;
+    public DataType<?> getType() {
+        return this.type;
     }
 
-    @Environment(EnvType.SERVER)
     public boolean isDirty() {
         return this.dirty;
     }
 
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
+    }
+
+    public void setRaw(Object value) {
+        //noinspection unchecked
+        this.set((T) value);
     }
 }

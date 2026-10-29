@@ -11,7 +11,6 @@
     "particle.ParticleManagerMixin",
     "entity_model_flag.EntityModelMixin",
     "game_hook.GameRendererMixin",
-    "custom_atlas.AtlasLoaderMixin",
     "dungeon.DungeonMixin"
   ],
   "injectors": {

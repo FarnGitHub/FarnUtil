@@ -14,31 +14,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Random;
 
-@Mixin(value = DungeonFeature.class, priority = 1100)
+@Mixin(value = DungeonFeature.class, priority = Integer.MAX_VALUE)
 public class DungeonMixin {
 
     @Unique
-    private final Random farnutil_random = new Random();
+    private World farnutil_world;
 
     @SuppressWarnings("NameDoesntMatchTargetClass")
     @Inject(method="generate", at = @At("HEAD"))
     public void farnutil_setRandomSeed(World world, Random random, int x, int y, int z, CallbackInfoReturnable<Boolean> cir) {
-        farnutil_random.setSeed(world.getSeed() * (x + y + z));
+        farnutil_world = world;
     }
 
     @WrapMethod(method="getRandomChestItem")
     public ItemStack farnutil_getChestContent(Random rand, Operation<ItemStack> original) {
-        ItemStack loot = original.call(rand);
-        return loot != null ? loot : DungeonAPI.pickLoot(farnutil_random);
+        return DungeonAPI.getLoot(original.call(rand), rand, farnutil_world);
     }
 
     @WrapMethod(method="getRandomEntity")
     public String farnutil_getRandomEntity(Random rand, Operation<String> original) {
-        String ogMob = original.call(rand);
-        String mob = DungeonAPI.pickMob(farnutil_random);
-        if(mob != null && farnutil_random.nextBoolean())
-            return mob;
-        else
-            return ogMob;
+        return DungeonAPI.getMob(original.call(rand), rand, farnutil_world);
     }
 }
