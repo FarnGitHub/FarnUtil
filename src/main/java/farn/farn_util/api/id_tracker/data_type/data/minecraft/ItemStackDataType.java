@@ -44,4 +44,9 @@ public class ItemStackDataType implements DataType<ItemStack> {
     public ItemStack defaultValue() {
         return null;
     }
+
+    @Override
+    public ItemStack validate(Object original) {
+        return (ItemStack)original;
+    }
 }

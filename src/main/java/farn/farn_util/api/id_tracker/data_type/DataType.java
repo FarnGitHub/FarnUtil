@@ -23,4 +23,9 @@ public interface DataType<T> {
         //noinspection unchecked
         writeData(output, (IDDataTrackerEntry<T>) entry);
     }
+
+    default T validate(Object original) {
+        //noinspection unchecked
+        return original == null ? defaultValue() : (T)original;
+    }
 }
