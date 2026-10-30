@@ -19,8 +19,8 @@ public class Vec3DDataType implements DataType<Vec3d> {
     }
 
     @Override
-    public IDDataTrackerEntry<Vec3d> readData(DataInputStream stream, Identifier key) throws IOException {
-        Vec3d vec3d = Vec3d.createCached(stream.readDouble(), stream.readDouble(), stream.readDouble());
+    public IDDataTrackerEntry<Vec3d> readData(DataInputStream input, Identifier key) throws IOException {
+        Vec3d vec3d = Vec3d.createCached(input.readDouble(), input.readDouble(), input.readDouble());
         return new IDDataTrackerEntry<>(this, key, vec3d);
     }
 

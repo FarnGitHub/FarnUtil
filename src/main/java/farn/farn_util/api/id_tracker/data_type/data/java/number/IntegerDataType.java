@@ -15,8 +15,8 @@ public class IntegerDataType implements DataType<Integer> {
     }
 
     @Override
-    public IDDataTrackerEntry<Integer> readData(DataInputStream stream, Identifier key) throws IOException {
-        return new IDDataTrackerEntry<>(this, key, stream.readInt());
+    public IDDataTrackerEntry<Integer> readData(DataInputStream input, Identifier key) throws IOException {
+        return new IDDataTrackerEntry<>(this, key, input.readInt());
     }
 
     @Override

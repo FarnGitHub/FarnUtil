@@ -11,7 +11,7 @@ public interface DataType<T> {
 
     void writeData(DataOutputStream output, IDDataTrackerEntry<T> entry) throws IOException;
 
-    IDDataTrackerEntry<T> readData(DataInputStream stream, Identifier key) throws IOException;
+    IDDataTrackerEntry<T> readData(DataInputStream input, Identifier key) throws IOException;
 
     Identifier id();
 

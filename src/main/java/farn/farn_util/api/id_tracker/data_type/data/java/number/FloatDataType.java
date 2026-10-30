@@ -15,8 +15,8 @@ public class FloatDataType implements DataType<Float> {
     }
 
     @Override
-    public IDDataTrackerEntry<Float> readData(DataInputStream stream, Identifier key) throws IOException {
-        return new IDDataTrackerEntry<>(this, key, stream.readFloat());
+    public IDDataTrackerEntry<Float> readData(DataInputStream input, Identifier key) throws IOException {
+        return new IDDataTrackerEntry<>(this, key, input.readFloat());
     }
 
     @Override

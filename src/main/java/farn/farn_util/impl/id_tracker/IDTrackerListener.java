@@ -16,6 +16,7 @@ import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.StationAPI;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
 
+@SuppressWarnings("unused")
 public class IDTrackerListener {
 
     @EventListener

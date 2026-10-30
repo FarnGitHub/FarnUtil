@@ -19,10 +19,10 @@ public class Vec3IDataType implements DataType<Vec3i> {
     }
 
     @Override
-    public IDDataTrackerEntry<Vec3i> readData(DataInputStream stream, Identifier key) throws IOException {
-        int x = stream.readInt();
-        int y = stream.readInt();
-        int z = stream.readInt();
+    public IDDataTrackerEntry<Vec3i> readData(DataInputStream input, Identifier key) throws IOException {
+        int x = input.readInt();
+        int y = input.readInt();
+        int z = input.readInt();
         return new IDDataTrackerEntry<>(this, key, new Vec3i(x, y, z));
     }
 

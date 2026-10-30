@@ -15,8 +15,8 @@ public class BooleanDataType implements DataType<Boolean> {
     }
 
     @Override
-    public IDDataTrackerEntry<Boolean> readData(DataInputStream stream, Identifier key) throws IOException {
-        return new IDDataTrackerEntry<>(this, key, stream.readBoolean());
+    public IDDataTrackerEntry<Boolean> readData(DataInputStream input, Identifier key) throws IOException {
+        return new IDDataTrackerEntry<>(this, key, input.readBoolean());
     }
 
     @Override

@@ -3,7 +3,6 @@ package farn.farn_util.api.id_tracker;
 import farn.farn_util.api.id_tracker.data_type.DataType;
 import farn.farn_util.api.id_tracker.data_type.DataTypes;
 import farn.farn_util.api.id_tracker.data_type.registry.DataTypeRegistry;
-import farn.farn_util.impl.id_tracker.Class2DataTypeLegacyMapper;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.network.packet.Packet;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -188,45 +187,5 @@ public class IDDataTracker {
 
     public Collection<IDDataTrackerEntry<?>> values() {
         return this.entries.values();
-    }
-
-    @Deprecated
-    public <T> void startTracking(String key, T value) {
-        startTracking(Identifier.of(key), value);
-    }
-
-    @Deprecated
-    public <T> void startTracking(Identifier key, T value) {
-        if(value == null)
-            throw new NullPointerException(key + " cannot be null!, this method shouldn't even be used");
-        DataType<T> type = Class2DataTypeLegacyMapper.get(value);
-        if(type == null)
-            throw new NullPointerException("Cannot find DataType for " + key + ", this method shouldn't even be used");
-        startTracking(key, type, value);
-    }
-
-    @Deprecated
-    public byte getByte(String id) {
-        return getByte(Identifier.of(id));
-    }
-
-    @Deprecated
-    public int getInt(String id) {
-        return getInt(Identifier.of(id));
-    }
-
-    @Deprecated
-    public String getString(String id) {
-        return getString(Identifier.of(id));
-    }
-
-    @Deprecated
-    public <T> T get(String id) {
-        return get(Identifier.of(id));
-    }
-
-    @Deprecated
-    public void set(String id, Object object) {
-        this.set(Identifier.of(id), object);
     }
 }

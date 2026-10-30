@@ -15,8 +15,8 @@ public class LongDataType implements DataType<Long> {
     }
 
     @Override
-    public IDDataTrackerEntry<Long> readData(DataInputStream stream, Identifier key) throws IOException {
-        return new IDDataTrackerEntry<>(this, key, stream.readLong());
+    public IDDataTrackerEntry<Long> readData(DataInputStream input, Identifier key) throws IOException {
+        return new IDDataTrackerEntry<>(this, key, input.readLong());
     }
 
     @Override

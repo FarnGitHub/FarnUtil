@@ -155,7 +155,7 @@ dependencies {
     }
 
     modImplementation("maven.modrinth:adventures-updates-bow-stationapi:1.6.3-b1.7.3")
-    modImplementation("maven.modrinth:farns-name-tag:2.2.1-b1.7.3")
+    modImplementation("maven.modrinth:farns-name-tag:2.2.2-b1.7.3")
 }
 
 processResources {

@@ -13,21 +13,21 @@ import java.io.IOException;
 public class ItemStackDataType implements DataType<ItemStack> {
     @Override
     public void writeData(DataOutputStream output, IDDataTrackerEntry<ItemStack> entry) throws IOException {
-        boolean notNull = entry.get() != null;
+        ItemStack stack = entry.get();
+        boolean notNull = stack != null;
         output.writeBoolean(notNull);
-        if(notNull) {
-            entry.get().writeNbt(new NbtCompound()).write(output);
-        }
+        if(notNull) stack.writeNbt(new NbtCompound()).write(output);
     }
 
     @Override
-    public IDDataTrackerEntry<ItemStack> readData(DataInputStream stream, Identifier key) throws IOException {
-        if(stream.readBoolean()) {
-            NbtCompound itemData = new NbtCompound();
-            itemData.read(stream);
-            return new IDDataTrackerEntry<>(this, key, new ItemStack(itemData));
+    public IDDataTrackerEntry<ItemStack> readData(DataInputStream input, Identifier key) throws IOException {
+        ItemStack stack = null;
+        if(input.readBoolean()) {
+            NbtCompound compound = new NbtCompound();
+            compound.read(input);
+            stack = new ItemStack(compound);
         }
-        return null;
+        return new IDDataTrackerEntry<>(this, key, stack);
     }
 
     @Override

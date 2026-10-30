@@ -15,8 +15,8 @@ public class ByteDataType implements DataType<Byte> {
     }
 
     @Override
-    public IDDataTrackerEntry<Byte> readData(DataInputStream stream, Identifier key) throws IOException {
-        return new IDDataTrackerEntry<>(this, key, stream.readByte());
+    public IDDataTrackerEntry<Byte> readData(DataInputStream input, Identifier key) throws IOException {
+        return new IDDataTrackerEntry<>(this, key, input.readByte());
     }
 
     @Override

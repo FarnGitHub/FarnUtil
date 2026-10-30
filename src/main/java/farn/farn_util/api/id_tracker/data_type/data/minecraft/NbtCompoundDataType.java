@@ -16,9 +16,9 @@ public class NbtCompoundDataType implements DataType<NbtCompound> {
     }
 
     @Override
-    public IDDataTrackerEntry<NbtCompound> readData(DataInputStream stream, Identifier key) throws IOException {
+    public IDDataTrackerEntry<NbtCompound> readData(DataInputStream input, Identifier key) throws IOException {
         NbtCompound compound = new NbtCompound();
-        compound.read(stream);
+        compound.read(input);
         return new IDDataTrackerEntry<>(this, key, compound);
     }
 

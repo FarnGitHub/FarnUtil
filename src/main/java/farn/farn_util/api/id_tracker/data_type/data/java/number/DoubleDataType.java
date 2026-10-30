@@ -15,8 +15,8 @@ public class DoubleDataType implements DataType<Double> {
     }
 
     @Override
-    public IDDataTrackerEntry<Double> readData(DataInputStream stream, Identifier key) throws IOException {
-        return new IDDataTrackerEntry<>(this, key, stream.readDouble());
+    public IDDataTrackerEntry<Double> readData(DataInputStream input, Identifier key) throws IOException {
+        return new IDDataTrackerEntry<>(this, key, input.readDouble());
     }
 
     @Override

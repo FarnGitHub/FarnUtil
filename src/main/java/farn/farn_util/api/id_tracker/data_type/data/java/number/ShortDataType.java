@@ -15,8 +15,8 @@ public class ShortDataType implements DataType<Short> {
     }
 
     @Override
-    public IDDataTrackerEntry<Short> readData(DataInputStream stream, Identifier key) throws IOException {
-        return new IDDataTrackerEntry<>(this, key, stream.readShort());
+    public IDDataTrackerEntry<Short> readData(DataInputStream input, Identifier key) throws IOException {
+        return new IDDataTrackerEntry<>(this, key, input.readShort());
     }
 
     @Override
