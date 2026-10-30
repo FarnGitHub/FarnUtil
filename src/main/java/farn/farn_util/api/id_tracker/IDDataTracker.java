@@ -6,6 +6,7 @@ import farn.farn_util.api.id_tracker.data_type.registry.DataTypeRegistry;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.network.packet.Packet;
 import net.modificationstation.stationapi.api.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.io.DataInputStream;
@@ -15,35 +16,26 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class IDDataTracker {
-    private final Reference2ObjectOpenHashMap<Identifier, IDDataTrackerEntry<?>> entries = new Reference2ObjectOpenHashMap<>();
+    private final Map<Identifier, IDDataTrackerEntry<?>> entries = new Reference2ObjectOpenHashMap<>();
     private boolean dirty;
 
-    public <T> void startTracking(Identifier id, DataType<T> type, @Nullable T value) {
-        if(value == null)
-            value = type.defaultValue();
-
-        if (this.entries.containsKey(id))
+    public <T> void startTracking(Identifier id, @NotNull DataType<T> type, @Nullable T value) {
+        if(this.entries.containsKey(id))
             throw new IllegalArgumentException("Duplicate id value for " + id + "!");
         if(!DataTypeRegistry.INSTANCE.containsId(type.id()))
-            throw new IllegalArgumentException(type.id() + " DataType hasn't been registered yet!");
-        if(!(type.classType().isInstance(value)))
-            throw new IllegalArgumentException("Cannot use " + type.id() + " DataType on " + id + "!");
-
-        this.entries.put(id, new IDDataTrackerEntry<>(type, id, value));
+            throw new IllegalArgumentException(type.id() + " must be registered in DataTypeRegistry!");
+        if(value != null && !type.classType().isInstance(value))
+            throw new ClassCastException("Attempt to set " + id + " with wrong type");
+        this.entries.put(id, new IDDataTrackerEntry<>(type, id, type.validate(value)));
     }
 
     public <T> T get(Identifier id) {
-        IDDataTrackerEntry<?> entry = this.entries.get(id);
-        if(entry == null)
-            throw new IllegalArgumentException("No data with id " + id + "!");
         //noinspection unchecked
-        return (T)entry.get();
+        return (T)getEntry(id).get();
     }
 
     public <T> void set(Identifier id, T value) {
-        IDDataTrackerEntry<?> entry = this.entries.get(id);
-        if(entry == null)
-            throw new IllegalArgumentException("No data with id " + id + "!");
+        IDDataTrackerEntry<?> entry = getEntry(id);
         if (!Objects.equals(value, entry.get())) {
             entry.setWithCheck(value);
             entry.setDirty(true);
@@ -122,9 +114,8 @@ public class IDDataTracker {
     public static void writeEntries(List<IDDataTrackerEntry<?>> entries, DataOutputStream output) throws IOException {
         if (entries != null) {
             output.writeInt(entries.size());
-            for(IDDataTrackerEntry<?> entry : entries) {
+            for(IDDataTrackerEntry<?> entry : entries)
                 writeEntry(output, entry);
-            }
         }
     }
 
@@ -187,5 +178,12 @@ public class IDDataTracker {
 
     public Collection<IDDataTrackerEntry<?>> values() {
         return this.entries.values();
+    }
+
+    private IDDataTrackerEntry<?> getEntry(Identifier id) {
+        IDDataTrackerEntry<?> entry = this.entries.get(id);
+        if(entry == null)
+            throw new IllegalArgumentException("No data with id: " + id);
+        return entry;
     }
 }

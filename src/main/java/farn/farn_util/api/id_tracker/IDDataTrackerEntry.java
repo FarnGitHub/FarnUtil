@@ -42,11 +42,8 @@ public class IDDataTrackerEntry<T> {
     }
 
     public void setWithCheck(Object value) {
-        Class<T> cls = type.classType();
-        if(value == null)
-            value = type.defaultValue();
-        else if(!cls.isInstance(value))
+        if(value != null && !type.classType().isInstance(value))
             throw new ClassCastException("Attempt to set " + id + " with wrong type");
-        this.set(cls.cast(value));
+        this.set(type.validate(value));
     }
 }
