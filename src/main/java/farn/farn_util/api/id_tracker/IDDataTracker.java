@@ -33,6 +33,8 @@ public class IDDataTracker {
 
     public void set(Identifier id, Object value) {
         IDDataTrackerEntry<?> entry = getEntry(id);
+        if(value != null && !entry.getClassType().isInstance(value))
+            throw new ClassCastException("Attempt to set value of " + id + " with wrong type!");
         if (!Objects.equals(value, entry.get())) {
             entry.setWithValidation(value);
             entry.setDirty(true);

@@ -46,8 +46,6 @@ public class IDDataTrackerEntry<T> {
     }
 
     public void setWithValidation(Object value) {
-        if(value != null && !getClassType().isInstance(value))
-            throw new ClassCastException("Attempt to set value of " + id + " with wrong type!");
         this.set(type.validate(value));
     }
 }
