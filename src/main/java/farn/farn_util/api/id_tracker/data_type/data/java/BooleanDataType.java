@@ -31,6 +31,6 @@ public class BooleanDataType implements DataType<Boolean> {
 
     @Override
     public Boolean defaultValue() {
-        return true;
+        return false;
     }
 }

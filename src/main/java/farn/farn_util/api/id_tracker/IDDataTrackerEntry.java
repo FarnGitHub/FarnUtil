@@ -33,6 +33,10 @@ public class IDDataTrackerEntry<T> {
         return this.type;
     }
 
+    public Class<T> getClassType() {
+        return type.classType();
+    }
+
     public boolean isDirty() {
         return this.dirty;
     }
@@ -41,9 +45,9 @@ public class IDDataTrackerEntry<T> {
         this.dirty = dirty;
     }
 
-    public void setWithCheck(Object value) {
-        if(value != null && !type.classType().isInstance(value))
-            throw new ClassCastException("Attempt to set " + id + " with wrong type");
+    public void setWithValidation(Object value) {
+        if(value != null && !getClassType().isInstance(value))
+            throw new ClassCastException("Attempt to set value of " + id + " with wrong type!");
         this.set(type.validate(value));
     }
 }

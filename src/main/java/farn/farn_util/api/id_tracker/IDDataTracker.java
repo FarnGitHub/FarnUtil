@@ -6,7 +6,6 @@ import farn.farn_util.api.id_tracker.data_type.registry.DataTypeRegistry;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.network.packet.Packet;
 import net.modificationstation.stationapi.api.util.Identifier;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.io.DataInputStream;
@@ -19,13 +18,11 @@ public class IDDataTracker {
     private final Map<Identifier, IDDataTrackerEntry<?>> entries = new Reference2ObjectOpenHashMap<>();
     private boolean dirty;
 
-    public <T> void startTracking(Identifier id, @NotNull DataType<T> type, @Nullable T value) {
+    public <T> void startTracking(Identifier id, DataType<T> type, @Nullable T value) {
         if(this.entries.containsKey(id))
             throw new IllegalArgumentException("Duplicate id value for " + id + "!");
         if(!DataTypeRegistry.INSTANCE.containsId(type.id()))
             throw new IllegalArgumentException(type.id() + " must be registered in DataTypeRegistry!");
-        if(value != null && !type.classType().isInstance(value))
-            throw new ClassCastException("Attempt to set " + id + " with wrong type");
         this.entries.put(id, new IDDataTrackerEntry<>(type, id, type.validate(value)));
     }
 
@@ -34,10 +31,10 @@ public class IDDataTracker {
         return (T)getEntry(id).get();
     }
 
-    public <T> void set(Identifier id, T value) {
+    public void set(Identifier id, Object value) {
         IDDataTrackerEntry<?> entry = getEntry(id);
         if (!Objects.equals(value, entry.get())) {
-            entry.setWithCheck(value);
+            entry.setWithValidation(value);
             entry.setDirty(true);
             this.dirty = true;
         }
@@ -171,7 +168,7 @@ public class IDDataTracker {
     public void writeUpdatedEntries(List<IDDataTrackerEntry<?>> entries) {
         for(IDDataTrackerEntry<?> data : entries) {
             IDDataTrackerEntry<?> entry = this.entries.get(data.getId());
-            if (entry != null) entry.setWithCheck(data.get());
+            if (entry != null) entry.setWithValidation(data.get());
         }
 
     }
